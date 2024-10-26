@@ -1,7 +1,20 @@
+import Navbar from "@/components/navbar";
+import Sidebar from "@/components/sidebar";
+
 interface Props {
   children: React.ReactNode;
 }
 
 export default function DashboardLayout({ children }: Props) {
-  return <div>{children}</div>;
+  return (
+    <div className="relative h-full bg-[#f5f1ff]">
+      <div className="fixed hidden h-full w-72 md:block">
+        <Sidebar />
+      </div>
+      <div className="h-full w-full md:pl-72">
+        <Navbar />
+        {children}
+      </div>
+    </div>
+  );
 }
