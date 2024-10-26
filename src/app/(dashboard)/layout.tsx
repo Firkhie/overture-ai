@@ -13,7 +13,9 @@ export default function DashboardLayout({ children }: Props) {
       </div>
       <div className="h-full w-full md:pl-72">
         <Navbar />
-        {children}
+        <div className="mx-auto max-w-screen-xl px-4 py-10 md:px-8">
+          {children}
+        </div>
       </div>
     </div>
   );
