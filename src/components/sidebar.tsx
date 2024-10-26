@@ -38,6 +38,12 @@ const sidebarMenu = [
   { label: "Help & FAQ", icon: CircleHelp, href: "/help", border: false },
 ];
 
+import { Inter } from "next/font/google";
+const inter = Inter({
+  weight: "600",
+  subsets: ["latin"],
+});
+
 export default function Sidebar() {
   const pathname = usePathname();
 
@@ -46,20 +52,17 @@ export default function Sidebar() {
       <div>
         {/* Logo */}
         <div className="flex h-[72px] items-center justify-center gap-x-1 border-b">
-          <div className="relative h-[18px] w-[18px]">
+          <div className="relative h-[22px] w-[22px]">
             <Image alt="Logo" fill src="/orbital-logo.png" />
           </div>
-          <p className="text-lg font-semibold uppercase tracking-wider">
-            rbitalflow
-          </p>
+          <p className={cn("text-xl", inter.className)}>OvertureAI</p>
         </div>
         {/* Menu */}
         <div className="space-y-1 p-4">
           {sidebarMenu.map((item) => (
-            <>
+            <div key={item.href}>
               <Link
                 href={item.href}
-                key={item.href}
                 className={cn(
                   "flex cursor-pointer rounded-lg p-3 text-sm transition hover:bg-[#ece5ff]",
                   pathname === item.href ? "bg-[#ece5ff]" : "text-black",
@@ -71,7 +74,7 @@ export default function Sidebar() {
                 </div>
               </Link>
               {item.border && <hr className="border-dashed" />}
-            </>
+            </div>
           ))}
         </div>
       </div>
