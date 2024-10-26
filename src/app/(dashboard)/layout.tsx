@@ -7,14 +7,14 @@ interface Props {
 
 export default function DashboardLayout({ children }: Props) {
   return (
-    <div className="relative h-full bg-[#f5f1ff]">
+    <div className="relative min-h-full bg-[#f5f1ff]">
       <div className="fixed hidden h-full w-72 md:block">
         <Sidebar />
       </div>
       <div className="h-full w-full md:pl-72">
         <Navbar />
-        <div className="mx-auto max-w-screen-xl px-4 py-10 md:px-8">
-          {children}
+        <div className="mx-auto max-w-screen-xl px-4 pt-[72px] md:px-8">
+          <div className="py-10">{children}</div>
         </div>
       </div>
     </div>
