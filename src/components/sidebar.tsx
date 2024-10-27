@@ -53,7 +53,7 @@ export default function Sidebar() {
         {/* Logo */}
         <div className="flex h-[72px] items-center justify-center gap-x-1 border-b">
           <div className="relative h-[22px] w-[22px]">
-            <Image alt="Logo" fill src="/orbital-logo.png" />
+            <Image alt="logo" fill src="/assets/logo.png" />
           </div>
           <p className={cn("text-xl", inter.className)}>OvertureAI</p>
         </div>
@@ -86,7 +86,7 @@ export default function Sidebar() {
         </div>
         <div className="flex flex-col gap-y-2 rounded-lg bg-[#ece5ff] p-3">
           <div className="relative h-9 w-9">
-            <Image alt="Logo" fill src="/orbital-logo.png" />
+            <Image alt="logo" fill src="/assets/logo.png" />
           </div>
           <p className="text-sm">
             You’re on the <span className="font-bold">Free Tier</span>. Upgrade
