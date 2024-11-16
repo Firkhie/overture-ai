@@ -1,44 +1,32 @@
 "use client";
 
-import axios from "axios";
-import Heading from "@/components/heading";
-import { MessageSquare, SendHorizontal } from "lucide-react";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { z } from "zod";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { MessageParam } from "@anthropic-ai/sdk/resources/messages.mjs";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { cn } from "@/lib/utils";
+
+import { MessageSquare, SendHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import Heading from "@/components/heading";
 import Loader from "@/components/loader";
 import Empty from "@/components/empty";
-import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
 
 export default function ConversationPage() {
-  const router = useRouter();
-  const [messages, setMessages] = useState([
-    {
-      role: "user",
-      content: "Hello",
-    },
-    {
-      role: "assistance",
-      content: "Hey",
-    },
-    // {
-    //   role: "user",
-    //   content:
-    //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    // },
-    // {
-    //   role: "assistance",
-    //   content:
-    //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    // },
-  ]);
+  const [messages, setMessages] = useState<MessageParam[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const endMessageRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    endMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isLoading]);
 
   const formSchema = z.object({
     prompt: z.string().min(1, {
@@ -53,29 +41,51 @@ export default function ConversationPage() {
     },
   });
 
-  const isLoading = form.formState.isSubmitting;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setIsLoading(true);
+
+    const userMessage: MessageParam = { role: "user", content: values.prompt };
+    setMessages((currentMessages) => [...currentMessages, userMessage]);
+
     try {
-      const userMessage = {
-        role: "user",
-        content: values.prompt,
-      };
-      const newMessages = [...messages, userMessage];
-      const response = await axios.post("/api/conversation", {
-        messages: newMessages,
+      const response = await fetch("/api/conversation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: userMessage }),
       });
-      setMessages((current) => [...current, userMessage, response.data]);
-      form.reset();
-    } catch (error: any) {
-      if (error.response.status === 403) {
-        // proModal.onOpen();
-      } else {
-        // toast.error("Something went wrong");
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+
+      setIsLoading(false);
+
+      const assistantMessage: MessageParam = { role: "assistant", content: "" };
+      setMessages((currentMessages) => [...currentMessages, assistantMessage]);
+
+      let messageBuffer = "";
+      while (true) {
+        const { done, value } = await reader!.read();
+        if (done) break;
+
+        messageBuffer += decoder.decode(value, { stream: true });
+        setMessages((currentMessages) => {
+          const updatedMessages = [...currentMessages];
+          updatedMessages[updatedMessages.length - 1] = {
+            role: "assistant",
+            content: messageBuffer,
+          };
+          return updatedMessages;
+        });
       }
+    } catch (error) {
+      console.error("Error in onSubmit:", error);
     } finally {
-      router.refresh();
+      setIsLoading(false);
+      form.reset();
+      inputRef.current?.focus();
     }
   };
+
   return (
     <div className="flex h-full flex-col">
       <Heading
@@ -83,7 +93,7 @@ export default function ConversationPage() {
         description="Experience our most sophisticated conversation model"
         icon={MessageSquare}
       />
-      <div className="scrollbar-hide flex-1 overflow-auto rounded-t-lg border border-[#593a8b] bg-white p-4">
+      <div className="flex-1 overflow-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
         <div className="space-y-3">
           {messages.length == 0 && !isLoading && (
             <Empty description="No conversation started." />
@@ -109,7 +119,8 @@ export default function ConversationPage() {
               </div>
             </div>
           ))}
-          {!isLoading && <Loader />}
+          {isLoading && <Loader />}
+          <div ref={endMessageRef} />
         </div>
       </div>
       <div className="space-y-2 border-l border-r border-[#593a8b] bg-white p-4">
@@ -124,11 +135,12 @@ export default function ConversationPage() {
                 <FormItem className="flex-1">
                   <FormControl className="m-0 p-0">
                     <Input
+                      {...field}
+                      ref={inputRef}
                       autoComplete="off"
                       className="border-0 text-[15px] outline-none focus-visible:ring-transparent"
                       disabled={isLoading}
                       placeholder="Send a message.."
-                      {...field}
                     />
                   </FormControl>
                 </FormItem>
