@@ -93,8 +93,8 @@ export default function ConversationPage() {
         description="Experience our most sophisticated conversation model"
         icon={MessageSquare}
       />
-      <div className="flex-1 overflow-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
-        <div className="space-y-3">
+      <div className="h-full flex-1 overflow-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
+        <div className="h-full space-y-3">
           {messages.length == 0 && !isLoading && (
             <Empty description="No conversation started." />
           )}

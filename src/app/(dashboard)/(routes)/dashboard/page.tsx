@@ -22,8 +22,8 @@ export default function DashboardPage() {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col">
-      <div className="mb-10 space-y-1">
+    <div className="flex flex-col pb-8 md:pb-10">
+      <div className="mb-6 space-y-1 md:mb-10">
         <h2 className="text-2xl font-bold md:text-2xl">
           Hello, Firdig Alfalakhi!
         </h2>
@@ -32,7 +32,7 @@ export default function DashboardPage() {
           Choose a tool below and unleash the full potential of AI!
         </p>
       </div>
-      <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
         {contents.map((content) => (
           <div
             onClick={() => router.push(content.href)}
