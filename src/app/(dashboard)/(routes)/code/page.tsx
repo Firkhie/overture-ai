@@ -6,8 +6,9 @@ import { MessageParam } from "@anthropic-ai/sdk/resources/messages.mjs";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
+import markdownit from "markdown-it";
 
-import { MessageSquare, SendHorizontal } from "lucide-react";
+import { Code, Copy, SendHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
@@ -48,7 +49,7 @@ export default function ConversationPage() {
     setMessages((currentMessages) => [...currentMessages, userMessage]);
 
     try {
-      const response = await fetch("/api/conversation", {
+      const response = await fetch("/api/code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: userMessage }),
@@ -56,6 +57,7 @@ export default function ConversationPage() {
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
+      const md = markdownit();
 
       setIsLoading(false);
 
@@ -68,11 +70,13 @@ export default function ConversationPage() {
         if (done) break;
 
         messageBuffer += decoder.decode(value, { stream: true });
+        const renderedMessage = md.render(messageBuffer);
+
         setMessages((currentMessages) => {
           const updatedMessages = [...currentMessages];
           updatedMessages[updatedMessages.length - 1] = {
             role: "assistant",
-            content: messageBuffer,
+            content: renderedMessage,
           };
           return updatedMessages;
         });
@@ -89,11 +93,11 @@ export default function ConversationPage() {
   return (
     <div className="flex h-full flex-col">
       <Heading
-        title="Conversation"
+        title="Code Generation"
         description="Experience our most sophisticated conversation model"
-        icon={MessageSquare}
+        icon={Code}
       />
-      <div className="h-full flex-1 overflow-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
+      <div className="h-full flex-1 overflow-y-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
         <div className="h-full space-y-3">
           {messages.length == 0 && !isLoading && (
             <Empty description="No conversation started." />
@@ -102,18 +106,34 @@ export default function ConversationPage() {
             <div
               key={String(message.content)}
               className={cn(
-                "flex w-full gap-x-3 rounded-lg p-5",
+                "flex gap-x-3 rounded-lg p-5",
                 message.role === "user"
                   ? "border border-black/10 bg-white"
                   : "bg-muted",
               )}
             >
               {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-              <div className="flex flex-col gap-y-[6px]">
+              <div className="flex w-full flex-col gap-y-[6px]">
                 <p className="font-semibold leading-none">
                   {message.role === "user" ? "Firdig Alfalakhi" : "OvertureAI"}
                 </p>
-                <p className="text-[15px]">{String(message.content)}</p>
+                {message.role === "user" ? (
+                  <p className="text-[15px]">{String(message.content)}</p>
+                ) : (
+                  <div className="mr-10 mt-2 overflow-hidden rounded-lg text-white">
+                    <div className="flex items-center justify-between bg-[#4b4b4b] px-5 py-3 text-xs">
+                      <p>Generated Code</p>
+                      <div className="flex cursor-pointer items-center gap-x-2">
+                        <Copy className="h-4 w-4" />
+                        <p>Copy Code</p>
+                      </div>
+                    </div>
+                    <div
+                      className="overflow-auto bg-[#282828] p-5 text-[15px] text-sm"
+                      dangerouslySetInnerHTML={{ __html: message.content }}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           ))}
