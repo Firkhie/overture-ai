@@ -35,7 +35,7 @@ export async function POST(req: Request) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("[CONVERSATION_ROUTE] Error:", error);
+    console.error("[CODE_ROUTE] Error:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
