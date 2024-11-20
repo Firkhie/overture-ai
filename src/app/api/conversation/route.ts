@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { createReadableStream } from "@/lib/streaming";
+import { createReadableStream } from "@/lib/streamUtils";
 
 const client = new Anthropic({
   apiKey: process.env["ANTHROPIC_API_KEY"],

@@ -15,3 +15,16 @@ export function createReadableStream(generator: Stream<RawMessageStreamEvent>) {
     },
   });
 }
+
+export async function streamToBuffer(stream: ReadableStream): Promise<Buffer> {
+  const reader = stream.getReader();
+  const chunks: Uint8Array[] = [];
+  let done, value;
+
+  while (!done) {
+    ({ done, value } = await reader.read());
+    if (value) chunks.push(value);
+  }
+
+  return Buffer.concat(chunks);
+}
