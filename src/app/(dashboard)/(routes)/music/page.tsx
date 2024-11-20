@@ -50,8 +50,18 @@ export default function MusicPage() {
   const endMessageRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const storedMessages = sessionStorage.getItem("musicMessages");
+    if (storedMessages) {
+      setMessages(JSON.parse(storedMessages));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      sessionStorage.setItem("musicMessages", JSON.stringify(messages));
+    }
     endMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading]);
+  }, [messages]);
 
   const formSchema = z.object({
     prompt: z.string().min(1, {

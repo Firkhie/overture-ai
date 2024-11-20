@@ -41,8 +41,18 @@ export default function ImagePage() {
   const endMessageRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const storedMessages = sessionStorage.getItem("imageMessages");
+    if (storedMessages) {
+      setMessages(JSON.parse(storedMessages));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      sessionStorage.setItem("imageMessages", JSON.stringify(messages));
+    }
     endMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading]);
+  }, [messages]);
 
   const formSchema = z.object({
     prompt: z.string().min(1, {
