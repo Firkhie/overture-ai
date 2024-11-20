@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@/lib/utils";
+import { cn, getRandomHeader } from "@/lib/utils";
 
-import { Music, Copy, SendHorizontal } from "lucide-react";
+import { Music, SendHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
@@ -21,9 +21,6 @@ type MessageParam = {
   content: string | { header: string; audioBase64: string };
 };
 
-const getRandomHeader = () =>
-  headerVariations[Math.floor(Math.random() * headerVariations.length)];
-
 const headerVariations = [
   "Experience the melody created from your prompt. Let the music inspire you!",
   "Your musical composition is ready! Enjoy the sound created from your input.",
@@ -32,7 +29,6 @@ const headerVariations = [
   "Your music creation is here! Listen to the melody we've crafted based on your input.",
 ];
 
-// Type guard to check if message.content is the object with audioBase64
 const isAudioMessage = (
   content: string | { header: string; audioBase64: string },
 ): content is { header: string; audioBase64: string } => {
@@ -94,7 +90,7 @@ export default function MusicPage() {
       const assistantMessage: MessageParam = {
         role: "assistant",
         content: {
-          header: getRandomHeader(),
+          header: getRandomHeader(headerVariations),
           audioBase64: data.audioBase64,
         },
       };
@@ -112,7 +108,7 @@ export default function MusicPage() {
     <div className="flex h-full flex-col">
       <Heading
         title="Music Generation"
-        description="Experience our most sophisticated code generation model"
+        description="Create unique melodies and harmonies tailored to your input using our AI composer"
         icon={Music}
       />
       <div className="h-full flex-1 overflow-y-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
@@ -139,7 +135,7 @@ export default function MusicPage() {
                   <p className="text-[15px]">{String(message.content)}</p>
                 ) : (
                   <>
-                    <p>
+                    <p className="text-[15px]">
                       {typeof message.content !== "string" &&
                         message.content.header}
                     </p>

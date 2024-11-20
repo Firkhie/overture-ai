@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   const { messages } = body;
 
   if (!process.env["REPLICATE_API_TOKEN"]) {
-    return new Response("API key not configured", { status: 500 });
+    return new Response("Replicate API key not configured", { status: 500 });
   }
 
   if (!messages) {

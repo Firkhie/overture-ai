@@ -1,12 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@/lib/utils";
+import { cn, getRandomHeader } from "@/lib/utils";
 
-import { ImageIcon, Copy, SendHorizontal, Download } from "lucide-react";
+import { ImageIcon, SendHorizontal, Download } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
@@ -15,7 +16,6 @@ import Loader from "@/components/loader";
 import Empty from "@/components/empty";
 import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
-import Image from "next/image";
 
 type MessageParam = {
   role: "user" | "assistant";
@@ -29,9 +29,6 @@ const headerVariations = [
   "Here you go! These images were generated using your input. Hope they inspire you!",
   "These are the images generated from the prompt you provided. Feel free to explore them below.",
 ];
-
-const getRandomHeader = () =>
-  headerVariations[Math.floor(Math.random() * headerVariations.length)];
 
 export default function ImagePage() {
   const [messages, setMessages] = useState<MessageParam[]>([]);
@@ -84,7 +81,7 @@ export default function ImagePage() {
       const assistantMessage: MessageParam = {
         role: "assistant",
         content: {
-          header: getRandomHeader(),
+          header: getRandomHeader(headerVariations),
           b64_json: data.map(
             (item) => `data:image/png;base64,${item.b64_json}`,
           ),
@@ -104,7 +101,7 @@ export default function ImagePage() {
     <div className="flex h-full flex-col">
       <Heading
         title="Image Generation"
-        description="Experience our most sophisticated image generation model"
+        description="Transform your ideas into stunning visuals with our cutting-edge image generator"
         icon={ImageIcon}
       />
       <div className="h-full flex-1 overflow-y-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
@@ -131,7 +128,7 @@ export default function ImagePage() {
                   <p className="text-[15px]">{String(message.content)}</p>
                 ) : (
                   <>
-                    <p>
+                    <p className="text-[15px]">
                       {typeof message.content !== "string" &&
                         message.content.header}
                     </p>

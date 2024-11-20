@@ -10,11 +10,8 @@ export async function POST(req: Request) {
   const body = await req.json();
   const { messages } = body;
 
-  if (
-    !process.env["REPLICATE_API_TOKEN"] ||
-    !process.env["ANTHROPIC_API_KEY"]
-  ) {
-    return new Response("API key not configured", { status: 500 });
+  if (!process.env["REPLICATE_API_TOKEN"]) {
+    return new Response("Replicate API key not configured", { status: 500 });
   }
 
   if (!messages) {

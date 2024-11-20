@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@/lib/utils";
+import { cn, getRandomHeader } from "@/lib/utils";
 
-import { Music, Copy, SendHorizontal } from "lucide-react";
+import { SendHorizontal, Video } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
@@ -21,19 +21,15 @@ type MessageParam = {
   content: string | { header: string; videoBase64: string };
 };
 
-const getRandomHeader = () =>
-  headerVariations[Math.floor(Math.random() * headerVariations.length)];
-
 const headerVariations = [
-  "Experience the melody created from your prompt. Let the music inspire you!",
-  "Your musical composition is ready! Enjoy the sound created from your input.",
-  "We've turned your idea into a beautiful track. Check out the music below!",
-  "Here’s a unique sound based on your prompt. Dive into the music we've generated for you.",
-  "Your music creation is here! Listen to the melody we've crafted based on your input.",
+  "Discover the cinematic experience created from your prompt. Dive into your unique video!",
+  "Your video masterpiece is ready! Witness your imagination brought to screen.",
+  "We’ve turned your idea into a captivating visual journey. Watch your video below!",
+  "Here’s a custom video generated just for you. Enjoy the creative visuals we’ve crafted!",
+  "Your vision is now a reality! Explore the dynamic video we’ve made based on your input.",
 ];
 
-// Type guard to check if message.content is the object with videoBase64
-const isAudioMessage = (
+const isVideoMessage = (
   content: string | { header: string; videoBase64: string },
 ): content is { header: string; videoBase64: string } => {
   return (
@@ -94,7 +90,7 @@ export default function VideoPage() {
       const assistantMessage: MessageParam = {
         role: "assistant",
         content: {
-          header: getRandomHeader(),
+          header: getRandomHeader(headerVariations),
           videoBase64: data.videoBase64,
         },
       };
@@ -111,9 +107,9 @@ export default function VideoPage() {
   return (
     <div className="flex h-full flex-col">
       <Heading
-        title="Music Generation"
-        description="Experience our most sophisticated code generation model"
-        icon={Music}
+        title="Video Generation"
+        description="Bring your concepts to life with visually captivating videos crafted by our AI"
+        icon={Video}
       />
       <div className="h-full flex-1 overflow-y-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
         <div className="h-full space-y-3">
@@ -139,11 +135,11 @@ export default function VideoPage() {
                   <p className="text-[15px]">{String(message.content)}</p>
                 ) : (
                   <>
-                    <p>
+                    <p className="text-[15px]">
                       {typeof message.content !== "string" &&
                         message.content.header}
                     </p>
-                    {isAudioMessage(message.content) && (
+                    {isVideoMessage(message.content) && (
                       <video
                         controls
                         className="mt-2 w-full rounded-lg border border-black"

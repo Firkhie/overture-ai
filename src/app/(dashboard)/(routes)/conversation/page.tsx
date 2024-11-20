@@ -100,7 +100,7 @@ export default function ConversationPage() {
     <div className="flex h-full flex-col">
       <Heading
         title="Conversation"
-        description="Experience our most sophisticated conversation model"
+        description="Engage in natural, dynamic interactions powered by our conversational AI"
         icon={MessageSquare}
       />
       <div className="h-full flex-1 overflow-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">

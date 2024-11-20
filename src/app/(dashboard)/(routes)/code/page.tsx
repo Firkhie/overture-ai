@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 import { MessageParam } from "@anthropic-ai/sdk/resources/messages.mjs";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@/lib/utils";
 import markdownit from "markdown-it";
+import { cn } from "@/lib/utils";
 
-import { Code, Copy, SendHorizontal } from "lucide-react";
+import { Check, Code, Copy, SendHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
@@ -21,6 +21,8 @@ import BotAvatar from "@/components/bot-avatar";
 export default function CodePage() {
   const [messages, setMessages] = useState<MessageParam[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const endMessageRef = useRef<HTMLDivElement | null>(null);
@@ -100,11 +102,31 @@ export default function CodePage() {
     }
   };
 
+  const handleCopy = async () => {
+    try {
+      const lastMessage = messages[messages.length - 1];
+      const htmlContent = lastMessage.content;
+
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = htmlContent as string;
+
+      const textContent = tempDiv.textContent || tempDiv.innerText;
+
+      if (textContent) {
+        await navigator.clipboard.writeText(textContent);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 1500);
+      }
+    } catch (error) {
+      console.error("Failed to copy text:", error);
+    }
+  };
+
   return (
     <div className="flex h-full flex-col">
       <Heading
         title="Code Generation"
-        description="Experience our most sophisticated code generation model"
+        description="Generate high-quality, efficient code effortlessly with our advanced model"
         icon={Code}
       />
       <div className="h-full flex-1 overflow-y-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
@@ -133,9 +155,21 @@ export default function CodePage() {
                   <div className="mr-10 mt-2 overflow-hidden rounded-lg text-white">
                     <div className="flex items-center justify-between bg-[#4b4b4b] px-5 py-3 text-xs">
                       <p>Generated Code</p>
-                      <div className="flex cursor-pointer items-center gap-x-2">
-                        <Copy className="h-4 w-4" />
-                        <p>Copy Code</p>
+                      <div
+                        className="flex cursor-pointer items-center gap-x-2"
+                        onClick={handleCopy}
+                      >
+                        {isCopied ? (
+                          <>
+                            <Check className="h-4 w-4" />
+                            <p>Copied</p>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-4 w-4" />
+                            <p>Copy Code</p>
+                          </>
+                        )}
                       </div>
                     </div>
                     <div
