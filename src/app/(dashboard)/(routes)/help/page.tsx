@@ -16,13 +16,13 @@ type AccordionItemType = {
 const accordionItems: AccordionItemType[] = [
   {
     id: "item-1",
-    header: "What is the difference between the Free Tier and the Pro Tier?",
+    header: "What is the difference between the Free Plan and the Pro Plan?",
     content: (
       <>
         <p>
-          <strong>Free Tier</strong> Includes 5 credits per month. Each credit
+          <strong>Free Plan</strong> Includes 5 credits per month. Each credit
           allows you to use any feature once (e.g., generate one image or
-          video). Meanwhile for the <strong>Pro Tier</strong>, it offers
+          video). Meanwhile for the <strong>Pro Plan</strong>, it offers
           unlimited usage for a monthly subscription fee.
         </p>
       </>
@@ -30,14 +30,14 @@ const accordionItems: AccordionItemType[] = [
   },
   {
     id: "item-2",
-    header: "How do I upgrade to the Pro Tier?",
+    header: "How do I upgrade to the Pro Plan?",
     content: (
       <>
         <p>
-          You can upgrade to the <strong>Pro Tier</strong> by clicking the
+          You can upgrade to the <strong>Pro Plan</strong> by clicking the
           "Upgrade" button in the sidebar or accessing it from the settings
           page. A pop-up will appear with details about the{" "}
-          <strong>Pro Tier</strong>. If you're interested, you can follow the
+          <strong>Pro Plan</strong>. If you're interested, you can follow the
           steps to make a payment.
         </p>
         <p>
@@ -49,13 +49,13 @@ const accordionItems: AccordionItemType[] = [
   },
   {
     id: "item-3",
-    header: "What happens if I run out of credits on the Free Tier?",
+    header: "What happens if I run out of credits on the Free Plan?",
     content: (
       <>
         <p>
-          If you run out of credits on the <strong>Free Tier</strong>, you won’t
+          If you run out of credits on the <strong>Free Plan</strong>, you won’t
           be able to use the features anymore. To continue using them, you will
-          need to subscribe to the <strong>Pro Tier</strong>.
+          need to subscribe to the <strong>Pro Plan</strong>.
         </p>
       </>
     ),

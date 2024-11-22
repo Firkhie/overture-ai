@@ -11,7 +11,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const whitelistedPages = ["/dashboard", "/help"];
+const whitelistedPages = ["/dashboard", "/help", "/subscription"];
 
 export default function DashboardLayout({ children }: Props) {
   const { user, isLoaded } = useUser();

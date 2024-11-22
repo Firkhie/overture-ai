@@ -4,11 +4,11 @@ import Image from "next/image";
 import {
   CircleHelp,
   Code,
+  CreditCard,
   ImageIcon,
   LayoutDashboardIcon,
   MessageSquare,
   Music,
-  Settings,
   VideoIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -34,7 +34,12 @@ const sidebarMenu = [
   { label: "Video Generation", icon: VideoIcon, href: "/video", border: false },
   { label: "Music Generation", icon: Music, href: "/music", border: false },
   { label: "Code Generation", icon: Code, href: "/code", border: true },
-  { label: "Settings", icon: Settings, href: "/settings", border: false },
+  {
+    label: "Subscription",
+    icon: CreditCard,
+    href: "/subscription",
+    border: false,
+  },
   { label: "Help & FAQ", icon: CircleHelp, href: "/help", border: false },
 ];
 
@@ -92,7 +97,7 @@ export default function Sidebar() {
             <Image alt="logo" fill src="/assets/logo.png" />
           </div>
           <p className="text-sm">
-            You’re on the <span className="font-bold">Free Tier</span>. Upgrade
+            You’re on the <span className="font-bold">Free Plan</span>. Upgrade
             for more features!
           </p>
           <Button variant="custom">Upgrade Now</Button>
