@@ -51,12 +51,15 @@ export default function Sidebar() {
     <div className="flex h-full flex-col justify-between border-r bg-white">
       <div>
         {/* Logo */}
-        <div className="flex h-[72px] items-center justify-center gap-x-1 border-b">
+        <Link
+          href="/dashboard"
+          className="flex h-[72px] items-center justify-center gap-x-1 border-b"
+        >
           <div className="relative h-[22px] w-[22px]">
             <Image alt="logo" fill src="/assets/logo.png" />
           </div>
           <p className={cn("text-xl", inter.className)}>OvertureAI</p>
-        </div>
+        </Link>
         {/* Menu */}
         <div className="space-y-1 p-4">
           {sidebarMenu.map((item) => (

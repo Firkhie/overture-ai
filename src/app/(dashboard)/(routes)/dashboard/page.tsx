@@ -9,6 +9,7 @@ import {
   Music,
   VideoIcon,
 } from "lucide-react";
+import Heading from "@/components/heading";
 
 const contents = [
   { label: "Conversation", icon: MessageSquare, href: "/conversation" },
@@ -23,15 +24,11 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col pb-8 md:pb-10">
-      <div className="mb-6 space-y-1 md:mb-10">
-        <h2 className="text-2xl font-bold md:text-2xl">
-          Hello, Firdig Alfalakhi!
-        </h2>
-        <p className="text-sm font-light text-muted-foreground md:text-base">
-          Discover a variety of powerful AI SaaS features designed just for you.
-          Choose a tool below and unleash the full potential of AI!
-        </p>
-      </div>
+      <Heading
+        title="Hello, Firdig Alfalakhi!"
+        description="Discover a variety of powerful AI SaaS features designed just for you.
+          Choose a tool below and unleash the full potential of AI!"
+      />
       <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
         {contents.map((content) => (
           <div

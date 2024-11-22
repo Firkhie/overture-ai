@@ -8,13 +8,15 @@ interface Props {
   children: React.ReactNode;
 }
 
+const whitelistedPages = ["/dashboard", "/help"];
+
 export default function DashboardLayout({ children }: Props) {
   const pathname = usePathname();
-  const isDashboardPage = pathname === "/dashboard";
+  const isWhitelisted = whitelistedPages.includes(pathname);
 
   return (
     <div
-      className={`relative ${isDashboardPage ? "min-h-full" : "h-full"} bg-[#f5f1ff]`}
+      className={`relative ${isWhitelisted ? "min-h-full" : "h-full"} bg-[#f5f1ff]`}
     >
       <div className="fixed h-[72px] w-full border-b-[1px] bg-white">
         <Navbar />
