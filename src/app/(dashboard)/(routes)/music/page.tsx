@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn, getRandomHeader } from "@/lib/utils";
+import useUserStore from "@/store/useUserStore";
 
 import { Music, SendHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -39,6 +40,7 @@ const isAudioMessage = (
 };
 
 export default function MusicPage() {
+  const { userName } = useUserStore();
   const [messages, setMessages] = useState<MessageParam[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -129,7 +131,7 @@ export default function MusicPage() {
               {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
               <div className="flex w-full flex-col gap-y-[6px]">
                 <p className="font-semibold leading-none">
-                  {message.role === "user" ? "Firdig Alfalakhi" : "OvertureAI"}
+                  {message.role === "user" ? userName : "OvertureAI"}
                 </p>
                 {message.role === "user" ? (
                   <p className="text-[15px]">{String(message.content)}</p>

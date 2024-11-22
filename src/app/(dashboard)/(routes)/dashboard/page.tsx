@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import useUserStore from "@/store/useUserStore";
+
 import {
   ArrowRight,
   Code,
@@ -20,12 +22,13 @@ const contents = [
 ];
 
 export default function DashboardPage() {
+  const { userName } = useUserStore();
   const router = useRouter();
 
   return (
     <div className="flex flex-col pb-8 md:pb-10">
       <Heading
-        title="Hello, Firdig Alfalakhi!"
+        title={`Hello, ${userName}`}
         description="Discover a variety of powerful AI SaaS features designed just for you.
           Choose a tool below and unleash the full potential of AI!"
       />

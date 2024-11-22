@@ -2,7 +2,10 @@
 
 import Navbar from "@/components/navbar";
 import Sidebar from "@/components/sidebar";
+import useUserStore from "@/store/useUserStore";
+import { useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 interface Props {
   children: React.ReactNode;
@@ -11,6 +14,15 @@ interface Props {
 const whitelistedPages = ["/dashboard", "/help"];
 
 export default function DashboardLayout({ children }: Props) {
+  const { user, isLoaded } = useUser();
+  const setUserName = useUserStore((state) => state.setUserName);
+
+  useEffect(() => {
+    if (isLoaded && user) {
+      setUserName(user.fullName || "Guest");
+    }
+  }, [isLoaded, user, setUserName]);
+
   const pathname = usePathname();
   const isWhitelisted = whitelistedPages.includes(pathname);
 

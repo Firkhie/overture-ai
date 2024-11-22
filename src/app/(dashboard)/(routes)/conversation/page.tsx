@@ -6,6 +6,7 @@ import { MessageParam } from "@anthropic-ai/sdk/resources/messages.mjs";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
+import useUserStore from "@/store/useUserStore";
 
 import { MessageSquare, SendHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -18,6 +19,7 @@ import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
 
 export default function ConversationPage() {
+  const { userName } = useUserStore();
   const [messages, setMessages] = useState<MessageParam[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -121,7 +123,7 @@ export default function ConversationPage() {
               {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
               <div className="flex flex-col gap-y-[6px]">
                 <p className="font-semibold leading-none">
-                  {message.role === "user" ? "Firdig Alfalakhi" : "OvertureAI"}
+                  {message.role === "user" ? userName : "OvertureAI"}
                 </p>
                 <p className="text-[15px]">{String(message.content)}</p>
               </div>
