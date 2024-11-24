@@ -100,7 +100,11 @@ export default function Sidebar() {
             You’re on the <span className="font-bold">Free Plan</span>. Upgrade
             for more features!
           </p>
-          <Button variant="custom">Upgrade Now</Button>
+          <Link href="/subscription">
+            <Button variant="custom" className="w-full">
+              Upgrade Now
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

@@ -18,6 +18,19 @@ export default function DashboardLayout({ children }: Props) {
   const setUserName = useUserStore((state) => state.setUserName);
 
   useEffect(() => {
+    const checkSubscription = async () => {
+      try {
+        await fetch("/api/subscription/check", {
+          method: "POST",
+        });
+      } catch (error) {
+        console.error("Error checking subscription:", error);
+      }
+    };
+    checkSubscription();
+  }, []);
+
+  useEffect(() => {
     if (isLoaded && user) {
       setUserName(user.fullName || "Guest");
     }

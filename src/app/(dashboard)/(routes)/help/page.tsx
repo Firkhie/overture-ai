@@ -16,46 +16,64 @@ type AccordionItemType = {
 const accordionItems: AccordionItemType[] = [
   {
     id: "item-1",
-    header: "What is the difference between the Free Plan and the Pro Plan?",
+    header:
+      "What is the difference between the Free Plan, Pro Plan, and Unlimited Plan?",
     content: (
       <>
         <p>
-          <strong>Free Plan</strong> Includes 5 credits per month. Each credit
-          allows you to use any feature once (e.g., generate one image or
-          video). Meanwhile for the <strong>Pro Plan</strong>, it offers
-          unlimited usage for a monthly subscription fee.
+          All plans provide access to the same features: conversation, image
+          generation, video generation, code generation, and music generation.
         </p>
+        <p>The difference lies in the number of credits provided:</p>
+        <ul>
+          <li>
+            <strong>Free Plan:</strong> 5 credits per month.
+          </li>
+          <li>
+            <strong>Pro Plan:</strong> 50 credits per month.
+          </li>
+          <li>
+            <strong>Unlimited Plan:</strong> Unlimited credits, no restrictions.
+          </li>
+        </ul>
       </>
     ),
   },
   {
     id: "item-2",
-    header: "How do I upgrade to the Pro Plan?",
+    header: "How do I upgrade to the Pro Plan or Unlimited Plan?",
     content: (
       <>
         <p>
-          You can upgrade to the <strong>Pro Plan</strong> by clicking the
-          "Upgrade" button in the sidebar or accessing it from the settings
-          page. A pop-up will appear with details about the{" "}
-          <strong>Pro Plan</strong>. If you're interested, you can follow the
-          steps to make a payment.
+          You can upgrade to the <strong>Pro Plan</strong> or{" "}
+          <strong>Unlimited Plan</strong> by visiting the{" "}
+          <strong>Subscription</strong> page. If you click the "Upgrade" button
+          in the sidebar, you’ll be redirected to the subscription page where
+          you can see all available plans, along with the plan you currently
+          have.
         </p>
         <p>
-          If you’re running out of free credits, trying to use any feature will
-          automatically show this upgrade pop-up.
+          From there, you can select the desired plan and follow the steps to
+          complete your subscription.
         </p>
       </>
     ),
   },
   {
     id: "item-3",
-    header: "What happens if I run out of credits on the Free Plan?",
+    header:
+      "What happens if I run out of credits on the Free Plan or Pro Plan?",
     content: (
       <>
         <p>
-          If you run out of credits on the <strong>Free Plan</strong>, you won’t
-          be able to use the features anymore. To continue using them, you will
-          need to subscribe to the <strong>Pro Plan</strong>.
+          If you run out of credits on the <strong>Free Plan</strong> or{" "}
+          <strong>Pro Plan</strong>, you won’t be able to use the features until
+          your credits reset at the start of the next month or you upgrade to a
+          higher plan.
+        </p>
+        <p>
+          You can upgrade at any time by visiting the{" "}
+          <strong>Subscription</strong> page.
         </p>
       </>
     ),
@@ -67,9 +85,9 @@ const accordionItems: AccordionItemType[] = [
       <>
         <p>
           Video or image generation might fail if the process takes too long to
-          complete. This can happen when the server takes longer than expected
-          to create or fetch the results. While most requests are completed
-          within the time limit, some may fail due to occasional delays.
+          complete due to high server load or other technical issues. While most
+          requests are completed successfully, occasional delays may result in
+          failures.
         </p>
       </>
     ),
@@ -81,7 +99,8 @@ const accordionItems: AccordionItemType[] = [
       <>
         <p>
           Yes, credits are deducted even if a request fails. This is because the
-          system still processes the request, whether it succeeds or not.
+          system processes the request regardless of its outcome. We recommend
+          retrying the request in such cases.
         </p>
       </>
     ),
