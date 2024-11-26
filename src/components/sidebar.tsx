@@ -49,7 +49,17 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-export default function Sidebar() {
+type SidebarProps = {
+  subsCredit: {
+    limit: number;
+    credits: number;
+    plan: string;
+  };
+};
+
+export default function Sidebar({
+  subsCredit: { limit, credits, plan },
+}: SidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -88,23 +98,39 @@ export default function Sidebar() {
       </div>
       {/* Counter */}
       <div className="flex flex-col gap-y-2 p-4">
-        <div className="flex flex-col gap-y-2 rounded-lg bg-[#ece5ff] p-3">
-          <p className="text-xs">1 / 3 credits remaining</p>
-          <Progress className="h-1" value={35} />
-        </div>
+        {plan !== "UNLIMITED" && (
+          <div className="flex flex-col gap-y-2 rounded-lg bg-[#ece5ff] p-3">
+            <p className="text-xs">
+              {limit} / {credits} credits remaining
+            </p>
+            <Progress className="h-1" value={(credits / limit) * 100} />
+          </div>
+        )}
         <div className="flex flex-col gap-y-2 rounded-lg bg-[#ece5ff] p-3">
           <div className="relative h-9 w-9">
             <Image alt="logo" fill src="/assets/logo.png" />
           </div>
           <p className="text-sm">
-            You’re on the <span className="font-bold">Free Plan</span>. Upgrade
-            for more features!
+            You’re on the{" "}
+            <span className="font-bold">
+              {plan === "PRO"
+                ? "Pro"
+                : plan === "UNLIMITED"
+                  ? "Unlimited"
+                  : "Free"}{" "}
+              Plan
+            </span>
+            {plan === "FREE"
+              ? ". Upgrade for more features!"
+              : ". Thank you for subscribing."}
           </p>
-          <Link href="/subscription">
-            <Button variant="custom" className="w-full">
-              Upgrade Now
-            </Button>
-          </Link>
+          {plan === "FREE" && (
+            <Link href="/subscription">
+              <Button variant="custom" className="w-full">
+                Upgrade Now
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </div>

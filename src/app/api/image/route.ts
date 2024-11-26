@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
+import { executeFeature } from "@/lib/subscriptionUtils";
+
 const client = new OpenAI({
   apiKey: process.env["OPENAI_API_KEY"],
 });
@@ -18,16 +20,21 @@ export async function POST(req: Request) {
   }
 
   try {
-    const response = await client.images.generate({
-      prompt: messages,
-      model: "dall-e-2",
-      n: 4,
-      quality: "standard",
-      response_format: "b64_json",
-      size: "256x256",
-    });
+    const check = await executeFeature();
+    if (check) {
+      const response = await client.images.generate({
+        prompt: messages,
+        model: "dall-e-2",
+        n: 4,
+        quality: "standard",
+        response_format: "b64_json",
+        size: "256x256",
+      });
 
-    return NextResponse.json(response.data);
+      return NextResponse.json(response.data);
+    } else {
+      return new NextResponse("NOT_OK", { status: 403 });
+    }
   } catch (error) {
     console.error("[IMAGE_ROUTE] Error:", error);
     return new NextResponse("Internal Server Error", { status: 500 });

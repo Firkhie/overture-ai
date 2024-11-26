@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
+
 import { streamToBuffer } from "@/lib/streamUtils";
+import { executeFeature } from "@/lib/subscriptionUtils";
 
 const replicate = new Replicate({
   auth: process.env["REPLICATE_API_TOKEN"],
@@ -31,14 +33,18 @@ export async function POST(req: Request) {
       scheduler: "EulerAncestralDiscreteScheduler",
       negative_prompt: "blurry",
     };
+    const check = await executeFeature();
+    if (check) {
+      const output = (await replicate.run(model, { input })) as ReadableStream;
+      const buffer = await streamToBuffer(output);
+      const videoBase64 = buffer.toString("base64");
 
-    const output = (await replicate.run(model, { input })) as ReadableStream;
-    const buffer = await streamToBuffer(output);
-    const videoBase64 = buffer.toString("base64");
-
-    return NextResponse.json({
-      videoBase64: `data:video/mp4;base64,${videoBase64}`,
-    });
+      return NextResponse.json({
+        videoBase64: `data:video/mp4;base64,${videoBase64}`,
+      });
+    } else {
+      return new NextResponse("NOT_OK", { status: 403 });
+    }
   } catch (error) {
     console.error("[VIDEO_ROUTE] Error:", error);
     return new NextResponse("Internal Server Error", { status: 500 });

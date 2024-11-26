@@ -5,7 +5,7 @@ import Sidebar from "@/components/sidebar";
 import useUserStore from "@/store/useUserStore";
 import { useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   children: React.ReactNode;
@@ -17,6 +17,12 @@ export default function DashboardLayout({ children }: Props) {
   const { user, isLoaded } = useUser();
   const setUserName = useUserStore((state) => state.setUserName);
 
+  const [subsCredit, setSubsCredit] = useState<{
+    limit: number;
+    credits: number;
+    plan: string;
+  }>({ limit: 0, credits: 0, plan: "FREE" });
+
   useEffect(() => {
     const checkSubscription = async () => {
       try {
@@ -27,7 +33,19 @@ export default function DashboardLayout({ children }: Props) {
         console.error("Error checking subscription:", error);
       }
     };
+    const getSubscriptionCredit = async () => {
+      try {
+        const response = await fetch("/api/subscription/credit", {
+          method: "POST",
+        });
+        const data = await response.json();
+        setSubsCredit(data);
+      } catch (error) {
+        console.error("Error getting subscription:", error);
+      }
+    };
     checkSubscription();
+    getSubscriptionCredit();
   }, []);
 
   useEffect(() => {
@@ -47,7 +65,7 @@ export default function DashboardLayout({ children }: Props) {
         <Navbar />
       </div>
       <div className="fixed hidden h-full w-72 md:block">
-        <Sidebar />
+        <Sidebar subsCredit={subsCredit} />
       </div>
       <div className="h-full w-full md:pl-72">
         <div className="mx-auto h-full max-w-screen-xl px-4 pt-14 md:px-8 md:pt-[72px]">

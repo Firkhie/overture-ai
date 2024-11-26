@@ -17,6 +17,7 @@ import Loader from "@/components/loader";
 import Empty from "@/components/empty";
 import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
+import { toast } from "sonner";
 
 type MessageParam = {
   role: "user" | "assistant";
@@ -78,6 +79,18 @@ export default function ImagePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: values.prompt }),
       });
+
+      if (response.status === 403) {
+        toast(
+          "You've reached your monthly limit. Please upgrade your plan or wait until next month for more credits.",
+          {
+            style: { backgroundColor: "#FFD2D2", color: "#D8000C" },
+          },
+        );
+        setMessages((currentMessages) => currentMessages.slice(0, -1));
+        return;
+      }
+
       const data = (await response.json()) as { b64_json: string }[];
 
       const assistantMessage: MessageParam = {

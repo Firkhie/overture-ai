@@ -3,16 +3,7 @@ import prismadb from "./prismadb";
 import { addMonths } from "date-fns";
 
 export async function checkAndCreateSubscription() {
-  const { userId, redirectToSignIn } = await auth();
-
-  if (!userId) return redirectToSignIn();
-
-  const userSubscription = await prismadb.userSubscription.findFirst({
-    where: {
-      userId: userId,
-      isActive: true,
-    },
-  });
+  const { userId, userSubscription } = await checkSubscription();
 
   // If no subscription exists, create a new FREE plan
   if (!userSubscription) {
@@ -34,46 +25,56 @@ export async function checkAndCreateSubscription() {
   return true;
 }
 
-async function createFreePlan(userId: string) {
-  await prismadb.userSubscription.create({
-    data: {
-      userId: userId,
-      plan: "FREE",
-      credits: 5,
-      isActive: true,
-      endDate: addMonths(new Date(), 1),
-    },
-  });
+export async function getSubscriptionCredit() {
+  const { userSubscription } = await checkSubscription();
+
+  switch (userSubscription?.plan) {
+    case "FREE":
+      return {
+        limit: 5,
+        credits: userSubscription.credits,
+        plan: userSubscription.plan,
+      };
+    case "PRO":
+      return {
+        limit: 50,
+        credits: userSubscription.credits,
+        plan: userSubscription.plan,
+      };
+    case "UNLIMITED":
+      return {
+        limit: 0,
+        credits: 0,
+        plan: userSubscription.plan,
+      };
+    default:
+      return {
+        limit: 5,
+        credits: 0,
+        plan: "FREE",
+      };
+  }
 }
 
-export async function executeFeature(featureCost: number) {
-  const { userId, redirectToSignIn } = await auth();
-
-  if (!userId) return redirectToSignIn();
-
-  const userSubscription = await prismadb.userSubscription.findFirst({
-    where: {
-      userId: userId,
-      isActive: true,
-    },
-  });
+export async function executeFeature() {
+  const { userSubscription } = await checkSubscription();
 
   if (!userSubscription) return false;
 
   // Handle Unlimited Plan
   if (userSubscription.plan === "UNLIMITED") return true;
-
+  console.log("OK");
   // Handle Free or Pro Plans
-  if (userSubscription.credits >= featureCost) {
+  if (userSubscription.credits >= 1) {
     await prismadb.userSubscription.update({
       where: { id: userSubscription.id },
       data: {
-        credits: userSubscription.credits - featureCost,
+        credits: userSubscription.credits - 1,
       },
     });
     return true;
   }
-
+  console.log("OK1");
   // Insufficient Credits
   return false;
 }
@@ -113,3 +114,30 @@ export async function executeFeature(featureCost: number) {
 //     },
 //   });
 // }
+
+async function checkSubscription() {
+  const { userId, redirectToSignIn } = await auth();
+
+  if (!userId) return redirectToSignIn();
+
+  const userSubscription = await prismadb.userSubscription.findFirst({
+    where: {
+      userId: userId,
+      isActive: true,
+    },
+  });
+
+  return { userId, userSubscription };
+}
+
+async function createFreePlan(userId: string) {
+  await prismadb.userSubscription.create({
+    data: {
+      userId: userId,
+      plan: "FREE",
+      credits: 5,
+      isActive: true,
+      endDate: addMonths(new Date(), 1),
+    },
+  });
+}
