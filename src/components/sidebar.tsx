@@ -99,7 +99,7 @@ export default function Sidebar() {
       </div>
       {/* Counter */}
       <div className="flex flex-col gap-y-2 p-4">
-        {plan && credits ? (
+        {plan && credits !== null && credits !== undefined ? (
           <>
             {plan !== "UNLIMITED" && (
               <div className="flex flex-col gap-y-2 rounded-lg bg-[#ece5ff] p-3">
