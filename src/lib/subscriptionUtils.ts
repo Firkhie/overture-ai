@@ -1,14 +1,16 @@
-import { auth } from "@clerk/nextjs/server";
 import prismadb from "./prismadb";
+import {
+  SubscriptionPlan,
+  UserSubscription as UserSubscriptionParams,
+} from "@prisma/client";
 import { addMonths } from "date-fns";
 
-export async function checkAndCreateSubscription() {
-  const { userId, userSubscription } = await checkSubscription();
+export async function checkAndCreateSubscription(userId: string) {
+  const userSubscription = await checkSubscription(userId);
 
   // If no subscription exists, create a new FREE plan
   if (!userSubscription) {
-    await createFreePlan(userId);
-    return true;
+    return await createFreePlan(userId);
   }
 
   // Check if the subscription has expired
@@ -18,53 +20,15 @@ export async function checkAndCreateSubscription() {
       where: { id: userSubscription.id },
       data: { isActive: false },
     });
-    await createFreePlan(userId);
-    return true;
+    return await createFreePlan(userId);
   }
 
-  return true;
+  return userSubscription;
 }
 
-export async function getSubscriptionCredit() {
-  const { userSubscription } = await checkSubscription();
-
-  switch (userSubscription?.plan) {
-    case "FREE":
-      return {
-        limit: 5,
-        credits: userSubscription.credits,
-        plan: userSubscription.plan,
-      };
-    case "PRO":
-      return {
-        limit: 50,
-        credits: userSubscription.credits,
-        plan: userSubscription.plan,
-      };
-    case "UNLIMITED":
-      return {
-        limit: 0,
-        credits: 0,
-        plan: userSubscription.plan,
-      };
-    default:
-      return {
-        limit: 5,
-        credits: 0,
-        plan: "FREE",
-      };
-  }
-}
-
-export async function executeFeature() {
-  const { userSubscription } = await checkSubscription();
-
-  if (!userSubscription) return false;
-
-  // Handle Unlimited Plan
+export async function executeFeature(userSubscription: UserSubscriptionParams) {
   if (userSubscription.plan === "UNLIMITED") return true;
-  console.log("OK");
-  // Handle Free or Pro Plans
+
   if (userSubscription.credits >= 1) {
     await prismadb.userSubscription.update({
       where: { id: userSubscription.id },
@@ -74,25 +38,14 @@ export async function executeFeature() {
     });
     return true;
   }
-  console.log("OK1");
-  // Insufficient Credits
+
   return false;
 }
 
 export async function upgradeSubscription(
-  newPlan: "FREE" | "PRO" | "UNLIMITED",
+  userSubscription: UserSubscriptionParams,
+  newPlan: SubscriptionPlan,
 ) {
-  const { userId, redirectToSignIn } = await auth();
-
-  if (!userId) return redirectToSignIn();
-
-  const userSubscription = await prismadb.userSubscription.findFirst({
-    where: {
-      userId: userId,
-      isActive: true,
-    },
-  });
-
   // Deactivate current subscription if any
   if (userSubscription) {
     await prismadb.userSubscription.update({
@@ -103,29 +56,20 @@ export async function upgradeSubscription(
 
   // Determine credits and duration for the new plan
   const credits = newPlan === "FREE" ? 5 : newPlan === "PRO" ? 50 : 0;
-  console.log(userId, newPlan, credits, addMonths(new Date(), 1), "HERE");
+
   // Create the new subscription
-  try {
-    await prismadb.userSubscription.create({
-      data: {
-        userId: userId,
-        plan: newPlan,
-        credits: credits,
-        isActive: true,
-        endDate: addMonths(new Date(), 1),
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-  console.log("HERE2");
+  return await prismadb.userSubscription.create({
+    data: {
+      userId: userSubscription.userId,
+      plan: newPlan,
+      credits: credits,
+      isActive: true,
+      endDate: addMonths(new Date(), 1),
+    },
+  });
 }
 
-async function checkSubscription() {
-  const { userId, redirectToSignIn } = await auth();
-
-  if (!userId) return redirectToSignIn();
-
+async function checkSubscription(userId: string) {
   const userSubscription = await prismadb.userSubscription.findFirst({
     where: {
       userId: userId,
@@ -133,11 +77,11 @@ async function checkSubscription() {
     },
   });
 
-  return { userId, userSubscription };
+  return userSubscription;
 }
 
 async function createFreePlan(userId: string) {
-  await prismadb.userSubscription.create({
+  const userSubscription = await prismadb.userSubscription.create({
     data: {
       userId: userId,
       plan: "FREE",
@@ -146,4 +90,6 @@ async function createFreePlan(userId: string) {
       endDate: addMonths(new Date(), 1),
     },
   });
+
+  return userSubscription;
 }

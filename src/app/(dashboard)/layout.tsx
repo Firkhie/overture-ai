@@ -1,11 +1,13 @@
 "use client";
 
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
+import useUserStore from "@/store/useUserStore";
+
 import Navbar from "@/components/navbar";
 import Sidebar from "@/components/sidebar";
-import useUserStore from "@/store/useUserStore";
-import { useUser } from "@clerk/nextjs";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import useUserSubscriptionStore from "@/store/useUserSubscriptionStore";
 
 interface Props {
   children: React.ReactNode;
@@ -15,38 +17,25 @@ const whitelistedPages = ["/dashboard", "/help", "/subscription"];
 
 export default function DashboardLayout({ children }: Props) {
   const { user, isLoaded } = useUser();
-  const setUserName = useUserStore((state) => state.setUserName);
-
-  const [subsCredit, setSubsCredit] = useState<{
-    limit: number;
-    credits: number;
-    plan: string;
-  }>({ limit: 0, credits: 0, plan: "FREE" });
+  const { setUserName } = useUserStore();
+  const { setUserSubscription } = useUserSubscriptionStore();
 
   useEffect(() => {
     const checkSubscription = async () => {
       try {
-        await fetch("/api/subscription/check", {
-          method: "POST",
+        const response = await fetch("/api/subscription/check", {
+          method: "GET",
         });
+        const data = await response.json();
+        setUserSubscription(data);
       } catch (error) {
         console.error("Error checking subscription:", error);
       }
     };
-    const getSubscriptionCredit = async () => {
-      try {
-        const response = await fetch("/api/subscription/credit", {
-          method: "POST",
-        });
-        const data = await response.json();
-        setSubsCredit(data);
-      } catch (error) {
-        console.error("Error getting subscription:", error);
-      }
-    };
-    checkSubscription();
-    getSubscriptionCredit();
-  }, []);
+    if (user) {
+      checkSubscription();
+    }
+  }, [user, setUserSubscription]);
 
   useEffect(() => {
     if (isLoaded && user) {
@@ -65,7 +54,7 @@ export default function DashboardLayout({ children }: Props) {
         <Navbar />
       </div>
       <div className="fixed hidden h-full w-72 md:block">
-        <Sidebar subsCredit={subsCredit} />
+        <Sidebar />
       </div>
       <div className="h-full w-full md:pl-72">
         <div className="mx-auto h-full max-w-screen-xl px-4 pt-14 md:px-8 md:pt-[72px]">

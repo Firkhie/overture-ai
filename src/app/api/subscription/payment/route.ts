@@ -1,5 +1,5 @@
-import midtransClient from "midtrans-client";
 import { NextResponse } from "next/server";
+import midtransClient from "midtrans-client";
 
 interface MidtransTransactionResponse {
   token: string;
@@ -20,7 +20,8 @@ export async function POST(req: Request) {
     let parameter = {
       transaction_details: {
         order_id:
-          `OVERTUREAI-${plan}-` + Math.floor(1000000 + Math.random() * 9000000),
+          `OVERTUREAI-${plan.toUpperCase()}-` +
+          Math.floor(1000000 + Math.random() * 9000000),
         gross_amount: price,
       },
       credit_card: {
@@ -37,10 +38,9 @@ export async function POST(req: Request) {
         },
       ],
     };
-    console.log(plan, price, email, "OOOKKKK");
+
     const response: MidtransTransactionResponse =
       await snap.createTransaction(parameter);
-    console.log(response, "TEST");
     return NextResponse.json(response);
   } catch (error) {
     console.log("[PAYMENT_ROUTE]", error);

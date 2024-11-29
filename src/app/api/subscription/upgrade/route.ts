@@ -1,17 +1,19 @@
 import { auth } from "@clerk/nextjs/server";
-import { upgradeSubscription } from "@/lib/subscriptionUtils";
 import { NextResponse } from "next/server";
+
+import { upgradeSubscription } from "@/lib/subscriptionUtils";
 
 export async function POST(req: Request) {
   const { userId, redirectToSignIn } = await auth();
-  const body = await req.json();
-  const { plan } = body;
-  const newPlan = plan.split(" ")[0].toUpperCase();
-  console.log(newPlan, "TEST");
   if (!userId) return redirectToSignIn();
+
+  const body = await req.json();
+  const { plan, userSubscription } = body;
+
+  const newPlan = plan.split(" ")[0].toUpperCase();
   try {
-    await upgradeSubscription(newPlan);
-    return new NextResponse("OK");
+    const response = await upgradeSubscription(userSubscription, newPlan);
+    return NextResponse.json(response);
   } catch (error) {
     return new NextResponse("Internal Server Error", { status: 500 });
   }

@@ -2,12 +2,12 @@ import { auth } from "@clerk/nextjs/server";
 import { checkAndCreateSubscription } from "@/lib/subscriptionUtils";
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function GET() {
   const { userId, redirectToSignIn } = await auth();
   if (!userId) return redirectToSignIn();
   try {
-    await checkAndCreateSubscription();
-    return new NextResponse("OK");
+    const userSubscription = await checkAndCreateSubscription(userId);
+    return NextResponse.json(userSubscription);
   } catch (error) {
     return new NextResponse("Internal Server Error", { status: 500 });
   }
