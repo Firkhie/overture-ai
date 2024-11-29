@@ -9,7 +9,7 @@ const client = new OpenAI({
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { messages } = body;
+  const { messages, userSubscription } = body;
 
   if (!process.env["OPENAI_API_KEY"]) {
     return new Response("OpenAi API key not configured", { status: 500 });
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const check = await executeFeature();
+    const check = await executeFeature(userSubscription);
     if (check) {
       const response = await client.images.generate({
         prompt: messages,

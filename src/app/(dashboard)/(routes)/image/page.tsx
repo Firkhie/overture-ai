@@ -7,6 +7,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn, getRandomHeader } from "@/lib/utils";
 import useUserStore from "@/store/useUserStore";
+import useUserSubscriptionStore, {
+  UserSubscriptionParams,
+} from "@/store/useUserSubscriptionStore";
 
 import { ImageIcon, SendHorizontal, Download } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -34,6 +37,8 @@ const headerVariations = [
 
 export default function ImagePage() {
   const { userName } = useUserStore();
+  const { userSubscription, setUserSubscription } = useUserSubscriptionStore();
+
   const [messages, setMessages] = useState<MessageParam[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -77,7 +82,7 @@ export default function ImagePage() {
       const response = await fetch("/api/image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: values.prompt }),
+        body: JSON.stringify({ messages: values.prompt, userSubscription }),
       });
 
       if (response.status === 403) {
@@ -109,6 +114,13 @@ export default function ImagePage() {
       setIsLoading(false);
       form.reset();
       inputRef.current?.focus();
+
+      if (userSubscription && userSubscription.credits > 0) {
+        setUserSubscription({
+          ...userSubscription,
+          credits: userSubscription.credits - 1,
+        });
+      }
     }
   };
 
