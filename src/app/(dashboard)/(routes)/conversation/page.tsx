@@ -7,6 +7,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
 import useUserStore from "@/store/useUserStore";
+import useUserSubscriptionStore, {
+  UserSubscriptionParams,
+} from "@/store/useUserSubscriptionStore";
 
 import { MessageSquare, SendHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -21,6 +24,8 @@ import { toast } from "sonner";
 
 export default function ConversationPage() {
   const { userName } = useUserStore();
+  const { userSubscription, setUserSubscription } = useUserSubscriptionStore();
+
   const [messages, setMessages] = useState<MessageParam[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -64,7 +69,7 @@ export default function ConversationPage() {
       const response = await fetch("/api/conversation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: userMessage }),
+        body: JSON.stringify({ messages: userMessage, userSubscription }),
       });
 
       if (response.status === 403) {
@@ -107,6 +112,13 @@ export default function ConversationPage() {
       setIsLoading(false);
       form.reset();
       inputRef.current?.focus();
+
+      if (userSubscription && userSubscription.credits > 0) {
+        setUserSubscription({
+          ...userSubscription,
+          credits: userSubscription.credits - 1,
+        });
+      }
     }
   };
 
