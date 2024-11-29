@@ -10,7 +10,7 @@ const replicate = new Replicate({
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { messages } = body;
+  const { messages, userSubscription } = body;
 
   if (!process.env["REPLICATE_API_TOKEN"]) {
     return new Response("Replicate API key not configured", { status: 500 });
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
       normalization_strategy: "peak",
       classifier_free_guidance: 3,
     };
-    const check = await executeFeature();
+    const check = await executeFeature(userSubscription);
     if (check) {
       const output = (await replicate.run(model, { input })) as ReadableStream;
       const buffer = await streamToBuffer(output);
