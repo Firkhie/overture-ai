@@ -10,7 +10,7 @@ const client = new Anthropic({
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { messages } = body;
+  const { messages, userSubscription } = body;
 
   if (!process.env["ANTHROPIC_API_KEY"]) {
     return new Response("Anthropic API key not configured", { status: 500 });
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const check = await executeFeature();
+    const check = await executeFeature(userSubscription);
     if (check) {
       const streamingResponse = await client.messages.create({
         max_tokens: 1024,

@@ -8,6 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import markdownit from "markdown-it";
 import { cn } from "@/lib/utils";
 import useUserStore from "@/store/useUserStore";
+import useUserSubscriptionStore, {
+  UserSubscriptionParams,
+} from "@/store/useUserSubscriptionStore";
 
 import { Check, Code, Copy, SendHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -22,9 +25,10 @@ import { toast } from "sonner";
 
 export default function CodePage() {
   const { userName } = useUserStore();
+  const { userSubscription, setUserSubscription } = useUserSubscriptionStore();
+
   const [messages, setMessages] = useState<MessageParam[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -67,7 +71,7 @@ export default function CodePage() {
       const response = await fetch("/api/code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: userMessage }),
+        body: JSON.stringify({ messages: userMessage, userSubscription }),
       });
 
       if (response.status === 403) {
@@ -113,6 +117,13 @@ export default function CodePage() {
       setIsLoading(false);
       form.reset();
       inputRef.current?.focus();
+
+      if (userSubscription && userSubscription.credits > 0) {
+        setUserSubscription({
+          ...userSubscription,
+          credits: userSubscription.credits - 1,
+        });
+      }
     }
   };
 
