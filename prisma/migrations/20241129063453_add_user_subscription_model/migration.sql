@@ -16,7 +16,4 @@ CREATE TABLE "UserSubscription" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "UserSubscription_userId_key" ON "UserSubscription"("userId");
-
--- CreateIndex
 CREATE INDEX "UserSubscription_userId_isActive_idx" ON "UserSubscription"("userId", "isActive");

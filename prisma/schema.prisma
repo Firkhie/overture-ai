@@ -10,7 +10,7 @@ datasource db {
 
 model UserSubscription {
   id            String   @id @default(cuid())
-  userId        String   @unique // Clerk User ID
+  userId        String
   plan          SubscriptionPlan // Enum: "FREE", "PRO", "UNLIMITED"
   credits       Int
   isActive      Boolean

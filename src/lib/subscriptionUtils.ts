@@ -79,41 +79,47 @@ export async function executeFeature() {
   return false;
 }
 
-// export async function upgradeSubscription(newPlan: "PRO" | "UNLIMITED") {
-//   const { userId, redirectToSignIn } = await auth();
+export async function upgradeSubscription(
+  newPlan: "FREE" | "PRO" | "UNLIMITED",
+) {
+  const { userId, redirectToSignIn } = await auth();
 
-//   if (!userId) return redirectToSignIn();
+  if (!userId) return redirectToSignIn();
 
-//   const userSubscription = await prismadb.userSubscription.findFirst({
-//     where: {
-//       userId: userId,
-//       isActive: true,
-//     },
-//   });
+  const userSubscription = await prismadb.userSubscription.findFirst({
+    where: {
+      userId: userId,
+      isActive: true,
+    },
+  });
 
-//   // Deactivate current subscription if any
-//   if (userSubscription) {
-//     await prismadb.userSubscription.update({
-//       where: { id: userSubscription.id },
-//       data: { isActive: false },
-//     });
-//   }
+  // Deactivate current subscription if any
+  if (userSubscription) {
+    await prismadb.userSubscription.update({
+      where: { id: userSubscription.id },
+      data: { isActive: false },
+    });
+  }
 
-//   // Determine credits and duration for the new plan
-//   const credits = newPlan === "PRO" ? 50 : null; // Unlimited has no credits
-//   const endDate = newPlan === "PRO" ? addMonths(new Date(), 1) : null;
-
-//   // Create the new subscription
-//   await prismadb.userSubscription.create({
-//     data: {
-//       userId: userId,
-//       plan: newPlan,
-//       credits: credits,
-//       isActive: true,
-//       endDate: endDate,
-//     },
-//   });
-// }
+  // Determine credits and duration for the new plan
+  const credits = newPlan === "FREE" ? 5 : newPlan === "PRO" ? 50 : 0;
+  console.log(userId, newPlan, credits, addMonths(new Date(), 1), "HERE");
+  // Create the new subscription
+  try {
+    await prismadb.userSubscription.create({
+      data: {
+        userId: userId,
+        plan: newPlan,
+        credits: credits,
+        isActive: true,
+        endDate: addMonths(new Date(), 1),
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+  console.log("HERE2");
+}
 
 async function checkSubscription() {
   const { userId, redirectToSignIn } = await auth();
