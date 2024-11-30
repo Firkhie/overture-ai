@@ -47,26 +47,28 @@ export async function upgradeSubscription(
   newPlan: SubscriptionPlan,
 ) {
   // Deactivate current subscription if any
-  if (userSubscription) {
-    await prismadb.userSubscription.update({
-      where: { id: userSubscription.id },
-      data: { isActive: false },
+  if (newPlan.toLowerCase() !== userSubscription.plan.toLowerCase()) {
+    if (userSubscription) {
+      await prismadb.userSubscription.update({
+        where: { id: userSubscription.id },
+        data: { isActive: false },
+      });
+    }
+
+    // Determine credits and duration for the new plan
+    const credits = newPlan === "FREE" ? 5 : newPlan === "PRO" ? 50 : 0;
+
+    // Create the new subscription
+    return await prismadb.userSubscription.create({
+      data: {
+        userId: userSubscription.userId,
+        plan: newPlan,
+        credits: credits,
+        isActive: true,
+        endDate: addMonths(new Date(), 1),
+      },
     });
   }
-
-  // Determine credits and duration for the new plan
-  const credits = newPlan === "FREE" ? 5 : newPlan === "PRO" ? 50 : 0;
-
-  // Create the new subscription
-  return await prismadb.userSubscription.create({
-    data: {
-      userId: userSubscription.userId,
-      plan: newPlan,
-      credits: credits,
-      isActive: true,
-      endDate: addMonths(new Date(), 1),
-    },
-  });
 }
 
 async function checkSubscription(userId: string) {

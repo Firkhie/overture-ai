@@ -6,12 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import useUserSubscriptionStore from "@/store/useUserSubscriptionStore";
 import useUserStore from "@/store/useUserStore";
-import { formatEndDate, formatPlanName, formatPrice } from "@/lib/utils";
 
-import Heading from "@/components/heading";
+import { formatEndDate, formatPlanName } from "@/lib/utils";
+import { postInitiatePayment, postUpgradeSubscription } from "@/lib/api";
+
 import { CreditCard } from "lucide-react";
 import { subscriptionPlans } from "@/data/subscriptionPlans";
-import { postInitiatePayment, postUpgradeSubscription } from "@/lib/api";
+import Heading from "@/components/heading";
 import SubscriptionCard from "@/components/subscription/SubscriptionCard";
 
 export default function SubscriptionPage() {
@@ -127,7 +128,6 @@ export default function SubscriptionPage() {
             key={plan.name}
             plan={plan}
             currentPlan={userSubscription.plan.toLowerCase()}
-            userSubscription={userSubscription}
             handlePlanSelect={handlePlanSelect}
           />
         ))}

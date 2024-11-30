@@ -8,9 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import markdownit from "markdown-it";
 import { cn } from "@/lib/utils";
 import useUserStore from "@/store/useUserStore";
-import useUserSubscriptionStore, {
-  UserSubscriptionParams,
-} from "@/store/useUserSubscriptionStore";
+import useUserSubscriptionStore from "@/store/useUserSubscriptionStore";
 
 import { Check, Code, Copy, SendHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
