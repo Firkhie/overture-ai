@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   const body = await req.json();
   const { plan, userSubscription } = body;
 
-  const newPlan = plan.split(" ")[0].toUpperCase();
+  const newPlan = plan.toUpperCase();
   try {
     const response = await upgradeSubscription(userSubscription, newPlan);
     return NextResponse.json(response);

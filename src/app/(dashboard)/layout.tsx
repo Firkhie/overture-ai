@@ -17,7 +17,7 @@ const whitelistedPages = ["/dashboard", "/help", "/subscription"];
 
 export default function DashboardLayout({ children }: Props) {
   const { user, isLoaded } = useUser();
-  const { setUserName } = useUserStore();
+  const { setUserName, setUserEmail } = useUserStore();
   const { setUserSubscription } = useUserSubscriptionStore();
 
   useEffect(() => {
@@ -40,8 +40,9 @@ export default function DashboardLayout({ children }: Props) {
   useEffect(() => {
     if (isLoaded && user) {
       setUserName(user.fullName || "Guest");
+      setUserEmail(user.emailAddresses[0].emailAddress);
     }
-  }, [isLoaded, user, setUserName]);
+  }, [isLoaded, user, setUserName, setUserName]);
 
   const pathname = usePathname();
   const isWhitelisted = whitelistedPages.includes(pathname);
