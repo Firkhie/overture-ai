@@ -1,5 +1,4 @@
 import { Avatar } from "@/components/ui/avatar";
-import { AudioLines } from "lucide-react";
 import Image from "next/image";
 
 export default function BotAvatar() {

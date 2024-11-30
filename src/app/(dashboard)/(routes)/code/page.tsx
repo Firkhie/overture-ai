@@ -2,24 +2,28 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { MessageParam } from "@anthropic-ai/sdk/resources/messages.mjs";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import markdownit from "markdown-it";
+import { MessageParam } from "@anthropic-ai/sdk/resources/messages.mjs";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
 import useUserStore from "@/store/useUserStore";
 import useUserSubscriptionStore from "@/store/useUserSubscriptionStore";
 
-import { Check, Code, Copy, SendHorizontal } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Check, Code, Copy } from "lucide-react";
 import Heading from "@/components/heading";
 import Loader from "@/components/loader";
 import Empty from "@/components/empty";
 import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
+import ChatForm from "@/components/chat-form";
 import { toast } from "sonner";
+
+const formSchema = z.object({
+  prompt: z.string().min(1, {
+    message: "Prompt is required",
+  }),
+});
 
 export default function CodePage() {
   const { userName } = useUserStore();
@@ -45,12 +49,6 @@ export default function CodePage() {
     }
     endMessageRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  const formSchema = z.object({
-    prompt: z.string().min(1, {
-      message: "Prompt is required",
-    }),
-  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -208,38 +206,12 @@ export default function CodePage() {
           <div ref={endMessageRef} />
         </div>
       </div>
-      <div className="space-y-2 border-l border-r border-[#593a8b] bg-white p-4">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex h-14 items-center justify-between rounded-xl border-2 border-[#593a8b] px-4"
-          >
-            <FormField
-              name="prompt"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormControl className="m-0 p-0">
-                    <Input
-                      {...field}
-                      ref={inputRef}
-                      autoComplete="off"
-                      className="border-0 text-[15px] outline-none focus-visible:ring-transparent"
-                      disabled={isLoading}
-                      placeholder="Send a message.."
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <Button disabled={isLoading} size="chat" variant="custom">
-              <SendHorizontal />
-            </Button>
-          </form>
-        </Form>
-        <p className="text-center text-xs">
-          OvertureAI can make mistakes. Consider checkng important information.
-        </p>
-      </div>
+      <ChatForm
+        inputRef={inputRef}
+        isLoading={isLoading}
+        onSubmit={onSubmit}
+        formInstance={form}
+      />
     </div>
   );
 }
