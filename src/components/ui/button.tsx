@@ -26,6 +26,7 @@ const buttonVariants = cva(
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
         chat: "h-8 w-8 rounded-full",
+        navbar: "h-10 px-6 py-2 rounded-full",
       },
     },
     defaultVariants: {
