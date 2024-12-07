@@ -2,35 +2,34 @@ import Image from "next/image";
 
 export default function BannerPage() {
   return (
-    <div className="space-y-8 px-5 text-center lg:px-0">
-      <h2 className="font-bold uppercase">
+    <div className="my-8 space-y-8 px-5 text-center md:my-12 lg:my-20 lg:px-0">
+      <h2 className="text-sm font-bold uppercase md:text-base">
         Powered by Industry-Leading AI Technologies
       </h2>
-      <div className="flex justify-center gap-x-10 lg:gap-x-16">
-        <div className="lg:w-18 relative h-12 w-32 lg:h-12">
-          <Image
-            src="/assets/openai-logo.svg"
-            alt="OpenAI Logo"
-            layout="fill"
-            objectFit="contain"
-          />
-        </div>
-        <div className="lg:w-18 relative h-12 w-32 lg:h-12">
-          <Image
-            src="/assets/claude-logo.svg"
-            alt="Claude Logo"
-            layout="fill"
-            objectFit="contain"
-          />
-        </div>
-        <div className="lg:w-18 relative h-12 w-32 lg:h-12">
-          <Image
-            src="/assets/replicate-logo.svg"
-            alt="Replicate Logo"
-            layout="fill"
-            objectFit="contain"
-          />
-        </div>
+      <div className="flex flex-wrap justify-center gap-6 md:gap-10 lg:gap-16">
+        <Image
+          src="/assets/openai-logo.svg"
+          alt="OpenAI Logo"
+          width={128}
+          height={48}
+          className="h-9 w-24 grayscale md:h-12 md:w-32"
+        />
+
+        <Image
+          src="/assets/claude-logo.svg"
+          alt="Claude Logo"
+          width={128}
+          height={48}
+          className="h-9 w-24 grayscale md:h-12 md:w-32"
+        />
+
+        <Image
+          src="/assets/replicate-logo.svg"
+          alt="Replicate Logo"
+          width={128}
+          height={48}
+          className="h-9 w-24 grayscale md:h-12 md:w-32"
+        />
       </div>
     </div>
   );

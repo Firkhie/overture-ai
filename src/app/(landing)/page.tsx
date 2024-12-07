@@ -11,13 +11,17 @@ import LandingNavbarMobile from "@/components/landing/navbar-mobile";
 
 export default function LandingPage() {
   return (
-    <div className="flex h-full flex-col gap-y-12 lg:gap-y-20">
+    <div className="flex min-h-screen flex-col overflow-y-auto">
       <section id="home">
         <LandingNavbar />
         <LandingNavbarMobile />
       </section>
-      <LandingHero />
-      <LandingBanner />
+      <section id="hero">
+        <LandingHero />
+      </section>
+      <section id="banner">
+        <LandingBanner />
+      </section>
       <section id="features">
         <LandingFeature />
       </section>
@@ -27,7 +31,9 @@ export default function LandingPage() {
       <section id="contact">
         <LandingContact />
       </section>
-      <LandingFooter />
+      <section id="footer">
+        <LandingFooter />
+      </section>
     </div>
   );
 }
