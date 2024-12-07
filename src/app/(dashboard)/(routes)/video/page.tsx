@@ -154,10 +154,12 @@ export default function VideoPage() {
                   {message.role === "user" ? userName : "OvertureAI"}
                 </p>
                 {message.role === "user" ? (
-                  <p className="text-[15px]">{String(message.content)}</p>
+                  <p className="text-sm md:text-[15px]">
+                    {String(message.content)}
+                  </p>
                 ) : (
                   <>
-                    <p className="text-[15px]">
+                    <p className="text-sm md:text-[15px]">
                       {typeof message.content !== "string" &&
                         message.content.header}
                     </p>

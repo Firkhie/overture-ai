@@ -122,7 +122,9 @@ export default function HelpPage() {
             className="rounded-lg border-[#593a8b] bg-white"
             key={item.id}
           >
-            <AccordionTrigger>{item.header}</AccordionTrigger>
+            <AccordionTrigger className="text-start text-sm md:text-[15px]">
+              {item.header}
+            </AccordionTrigger>
             <AccordionContent>
               <div className="w-full border"></div>
               <div className="space-y-3 px-5 pt-4">{item.content}</div>

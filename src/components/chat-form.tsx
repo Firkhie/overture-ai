@@ -34,7 +34,7 @@ export default function ChatForm({
                     {...field}
                     ref={inputRef}
                     autoComplete="off"
-                    className="border-0 text-[15px] outline-none focus-visible:ring-transparent"
+                    className="border-0 text-sm outline-none focus-visible:ring-transparent md:text-[15px]"
                     disabled={isLoading}
                     placeholder="Send a message.."
                   />

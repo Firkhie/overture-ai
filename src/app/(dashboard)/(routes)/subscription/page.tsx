@@ -78,7 +78,7 @@ export default function SubscriptionPage() {
         description="Manage account subscription planning"
         icon={CreditCard}
       />
-      <div className="mb-4">
+      <div className="mb-4 text-sm md:text-[15px]">
         <p>
           You're currently on a <strong>{formattedPlan} Plan</strong>
         </p>

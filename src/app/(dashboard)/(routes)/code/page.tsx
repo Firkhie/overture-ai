@@ -167,11 +167,13 @@ export default function CodePage() {
             >
               {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
               <div className="flex w-full flex-col gap-y-[6px]">
-                <p className="font-semibold leading-none">
+                <p className="text-sm font-semibold leading-none md:text-[15px]">
                   {message.role === "user" ? userName : "OvertureAI"}
                 </p>
                 {message.role === "user" ? (
-                  <p className="text-[15px]">{String(message.content)}</p>
+                  <p className="text-sm md:text-[15px]">
+                    {String(message.content)}
+                  </p>
                 ) : (
                   <div className="mr-10 mt-2 overflow-hidden rounded-lg text-white">
                     <div className="flex items-center justify-between bg-[#4b4b4b] px-5 py-3 text-xs">
@@ -194,7 +196,7 @@ export default function CodePage() {
                       </div>
                     </div>
                     <div
-                      className="overflow-auto bg-[#282828] p-5 text-[15px] text-sm"
+                      className="overflow-auto bg-[#282828] p-5 text-sm md:text-[15px]"
                       dangerouslySetInnerHTML={{ __html: message.content }}
                     />
                   </div>

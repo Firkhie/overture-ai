@@ -110,25 +110,27 @@ const SubscriptionCard = ({
   };
 
   return (
-    <div className="flex h-full flex-col gap-y-3 rounded-lg border border-[#593a8b] bg-white p-5">
-      <h2 className="text-xl font-bold">{plan.name} Plan</h2>
-      <p className="text-[15px] font-light">{plan.description}</p>
+    <div className="flex h-full flex-col gap-y-2 rounded-lg border border-[#593a8b] bg-white p-5 md:gap-y-3">
+      <h2 className="text-base font-bold md:text-xl">{plan.name} Plan</h2>
+      <p className="text-sm font-light md:text-[15px]">{plan.description}</p>
       <div className="flex items-end gap-x-1">
-        <h1 className="text-3xl font-bold">Rp. {formatPrice(plan.price)}</h1>
-        <p>/mo</p>
+        <h1 className="text-2xl font-bold md:text-3xl">
+          Rp. {formatPrice(plan.price)}
+        </h1>
+        <p className="text-sm md:text-[15px]">/mo</p>
       </div>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger
           disabled={isCurrentPlan}
           className="disabled:pointer-events-none disabled:opacity-50"
         >
-          <Button variant="custom" className="w-full">
+          <Button variant="custom" className="w-full text-xs md:text-sm">
             {isCurrentPlan ? "Plan Selected" : "Select Plan"}
           </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-base md:text-[18px]">
               {isDowngrade
                 ? "Are you sure you want to downgrade?"
                 : "Are you sure you want to upgrade?"}
@@ -162,6 +164,7 @@ const SubscriptionCard = ({
               variant="custom"
               onClick={() => handlePlanSelect(plan)}
               disabled={isLoading}
+              className="text-xs md:text-sm"
             >
               {isLoading ? (
                 <LoaderCircle className="mx-4 animate-spin" />
@@ -169,17 +172,21 @@ const SubscriptionCard = ({
                 "Confirm"
               )}
             </Button>
-            <Button variant="ghost" onClick={() => setIsOpen(false)}>
+            <Button
+              variant="ghost"
+              onClick={() => setIsOpen(false)}
+              className="text-xs md:text-sm"
+            >
               Cancel
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <p className="font-semibold">Features include</p>
+      <p className="text-[15px] font-semibold md:text-base">Features include</p>
       {plan.features.map((feature: string) => (
         <div key={feature} className="flex items-center gap-x-2">
           <CircleCheck className="h-4 w-4 flex-shrink-0 text-[#714ab0]" />
-          <p>{feature}</p>
+          <p className="text-sm md:text-[15px]">{feature}</p>
         </div>
       ))}
     </div>

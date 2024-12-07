@@ -142,10 +142,12 @@ export default function ConversationPage() {
             >
               {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
               <div className="flex flex-col gap-y-[6px]">
-                <p className="font-semibold leading-none">
+                <p className="text-sm font-semibold leading-none md:text-[15px]">
                   {message.role === "user" ? userName : "OvertureAI"}
                 </p>
-                <p className="text-[15px]">{String(message.content)}</p>
+                <p className="text-sm md:text-[15px]">
+                  {String(message.content)}
+                </p>
               </div>
             </div>
           ))}
