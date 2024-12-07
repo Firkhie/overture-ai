@@ -3,7 +3,7 @@ import { Check } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 
-export const subscriptionPlans = [
+const subscriptionPlans = [
   {
     name: "Free",
     description:

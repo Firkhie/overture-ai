@@ -15,6 +15,7 @@ export async function POST(req: Request) {
     const response = await upgradeSubscription(userSubscription, newPlan);
     return NextResponse.json(response);
   } catch (error) {
+    console.log("[UPGRADE_SUBSCRIPTION_ROUTE]", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

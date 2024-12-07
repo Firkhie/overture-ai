@@ -47,10 +47,10 @@ const accordionItems: AccordionItemType[] = [
         <p>
           You can upgrade to the <strong>Pro Plan</strong> or{" "}
           <strong>Unlimited Plan</strong> by visiting the{" "}
-          <strong>Subscription</strong> page. If you click the "Upgrade" button
-          in the sidebar, you’ll be redirected to the subscription page where
-          you can see all available plans, along with the plan you currently
-          have.
+          <strong>Subscription</strong> page. If you click the
+          &quot;Upgrade&quot; button in the sidebar, you’ll be redirected to the
+          subscription page where you can see all available plans, along with
+          the plan you currently have.
         </p>
         <p>
           From there, you can select the desired plan and follow the steps to

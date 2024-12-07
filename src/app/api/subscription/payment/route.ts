@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { plan, price, email } = body;
 
-    let parameter = {
+    const parameter = {
       transaction_details: {
         order_id:
           `OVERTUREAI-${plan.toUpperCase()}-` +
@@ -43,6 +43,6 @@ export async function POST(req: Request) {
       await snap.createTransaction(parameter);
     return NextResponse.json(response);
   } catch (error) {
-    console.log("[PAYMENT_ROUTE]", error);
+    console.log("[PAYMENT_SUBSCRIPTION_ROUTE]", error);
   }
 }

@@ -152,9 +152,9 @@ const SubscriptionCard = ({
               ) : (
                 <>
                   {" "}
-                  By upgrading to the <strong>{plan.name} Plan</strong>, you'll
-                  gain additional features and benefits. Are you sure you want
-                  to upgrade?
+                  By upgrading to the <strong>{plan.name} Plan</strong>,
+                  you&apos;ll gain additional features and benefits. Are you
+                  sure you want to upgrade?
                 </>
               )}
             </DialogDescription>

@@ -13,7 +13,7 @@ import { CreditCard } from "lucide-react";
 import Heading from "@/components/heading";
 import SubscriptionCard from "@/components/subscription/subscription-card";
 
-export const subscriptionPlans = [
+const subscriptionPlans = [
   {
     name: "Free",
     description: "Perfect for exploring and testing our platform's features",
@@ -80,7 +80,7 @@ export default function SubscriptionPage() {
       />
       <div className="mb-4 text-sm md:text-[15px]">
         <p>
-          You're currently on a <strong>{formattedPlan} Plan</strong>
+          You`&apos;re currently on a <strong>{formattedPlan} Plan</strong>
         </p>
         <p className="mb-3">
           Expired in: <strong>{formattedEndDate}</strong>

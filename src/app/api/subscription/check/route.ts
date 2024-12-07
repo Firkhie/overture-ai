@@ -9,6 +9,7 @@ export async function GET() {
     const userSubscription = await checkAndCreateSubscription(userId);
     return NextResponse.json(userSubscription);
   } catch (error) {
+    console.log("[CHECK_SUBSCRIPTION_ROUTE]", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

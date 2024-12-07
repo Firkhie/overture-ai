@@ -42,7 +42,7 @@ export default function DashboardLayout({ children }: Props) {
       setUserName(user.fullName || "Guest");
       setUserEmail(user.emailAddresses[0].emailAddress);
     }
-  }, [isLoaded, user, setUserName, setUserName]);
+  }, [isLoaded, user, setUserName, setUserEmail]);
 
   const pathname = usePathname();
   const isWhitelisted = whitelistedPages.includes(pathname);

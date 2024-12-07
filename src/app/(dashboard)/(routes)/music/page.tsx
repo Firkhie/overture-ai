@@ -8,7 +8,7 @@ import { cn, getRandomHeader } from "@/lib/utils";
 import useUserStore from "@/store/useUserStore";
 import useUserSubscriptionStore from "@/store/useUserSubscriptionStore";
 
-import { Music, SendHorizontal } from "lucide-react";
+import { Music } from "lucide-react";
 import Heading from "@/components/heading";
 import Loader from "@/components/loader";
 import Empty from "@/components/empty";

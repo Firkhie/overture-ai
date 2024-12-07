@@ -1,12 +1,6 @@
 import Image from "next/image";
 import { Input } from "../ui/input";
 import { ArrowRight } from "lucide-react";
-import { Inter } from "next/font/google";
-
-const inter = Inter({
-  weight: "600",
-  subsets: ["latin"],
-});
 
 export default function FooterPage() {
   return (
