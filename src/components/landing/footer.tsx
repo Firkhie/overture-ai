@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 export default function FooterPage() {
   return (
     <div>
-      <div className="mt-8 flex flex-col items-center justify-between gap-y-14 bg-[#8f69cb]/30 px-4 py-4 md:px-6 lg:mb-8 lg:rounded-xl">
+      <div className="mt-8 flex flex-col items-center justify-between gap-y-14 bg-[#8f69cb]/20 px-4 py-4 md:px-6 lg:mb-8 lg:rounded-xl">
         <div className="flex w-full flex-col items-end justify-between gap-4 sm:flex-row">
           {/* Left */}
           <div className="flex w-full flex-col gap-y-2">
