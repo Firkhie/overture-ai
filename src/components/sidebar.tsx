@@ -104,7 +104,7 @@ export default function Sidebar() {
             {plan !== "UNLIMITED" && (
               <div className="flex flex-col gap-y-2 rounded-lg bg-[#ece5ff] p-3">
                 <p className="text-xs">
-                  {creditLimit[plan]} / {credits} credits remaining
+                  {credits} / {creditLimit[plan]} credits remaining
                 </p>
                 <Progress
                   className="h-1"
