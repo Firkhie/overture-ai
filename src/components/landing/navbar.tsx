@@ -12,7 +12,7 @@ const inter = Inter({
 export default function LandingNavbar() {
   return (
     <div className="fixed left-0 top-6 z-50 hidden w-full lg:flex">
-      <div className="flex w-full items-center justify-between rounded-full bg-[#8f69cb]/40 px-6 py-4 text-[15px] backdrop-blur-md lg:mx-auto lg:max-w-screen-lg xl:max-w-screen-xl">
+      <div className="flex w-full items-center justify-between rounded-full bg-[#8f69cb]/20 px-6 py-4 text-[15px] backdrop-blur-md lg:mx-auto lg:max-w-screen-lg xl:max-w-screen-xl">
         <a href="#home" className="flex items-center justify-center gap-x-2">
           <div className="relative h-6 w-6">
             <Image alt="logo" fill src="/assets/logo.png" />

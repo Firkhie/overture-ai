@@ -6,8 +6,7 @@ interface Props {
 
 export default function LandingLayout({ children }: Props) {
   return (
-    // <div className="relative min-h-screen bg-gradient-to-br from-[#e2dcf3] to-[#8f69cb]">
-    <div className="relative min-h-screen bg-gradient-to-br from-[#e2dcf3] via-[#8f69cb] to-[#e2dcf3]">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#be9cf6] via-[#e2dcf3] to-[#e2dcf3]">
       <div className="h-full lg:mx-auto lg:max-w-screen-lg xl:max-w-screen-xl">
         {children}
       </div>
