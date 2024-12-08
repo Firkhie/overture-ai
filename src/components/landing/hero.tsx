@@ -40,9 +40,11 @@ export default function LandingHero() {
               Sign Up
             </Button>
           </Link>
-          <Button variant="secondary" className="text-xs md:text-sm">
-            Contact Us
-          </Button>
+          <a href="#contact">
+            <Button variant="secondary" className="text-xs md:text-sm">
+              Contact Us
+            </Button>
+          </a>
         </div>
         <div className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-2xl">
           <Image
