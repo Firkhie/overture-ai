@@ -80,7 +80,7 @@ export default function SubscriptionPage() {
       />
       <div className="mb-4 text-sm md:text-[15px]">
         <p>
-          You`&apos;re currently on a <strong>{formattedPlan} Plan</strong>
+          You&apos;re currently on a <strong>{formattedPlan} Plan</strong>
         </p>
         <p className="mb-3">
           Expired in: <strong>{formattedEndDate}</strong>
