@@ -11,7 +11,7 @@ import LandingNavbarMobile from "@/components/landing/navbar-mobile";
 
 export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col overflow-y-auto">
+    <div className="flex min-h-screen flex-col">
       <section id="home">
         <LandingNavbar />
         <LandingNavbarMobile />
@@ -31,7 +31,7 @@ export default function LandingPage() {
       <section id="contact">
         <LandingContact />
       </section>
-      <section id="footer">
+      <section id="footer" className="mt-56 sm:mt-48">
         <LandingFooter />
       </section>
     </div>

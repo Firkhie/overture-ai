@@ -36,17 +36,21 @@ export default function LandingHero() {
         </p>
         <div className="space-x-2 pb-5 md:pb-8">
           <Link href="/sign-up">
-            <Button variant="custom" className="text-xs md:text-sm">
+            <Button variant="custom" className="text-xs md:text-sm" size="lg">
               Sign Up
             </Button>
           </Link>
           <a href="#contact">
-            <Button variant="secondary" className="text-xs md:text-sm">
+            <Button
+              variant="secondary"
+              className="text-xs md:text-sm"
+              size="lg"
+            >
               Contact Us
             </Button>
           </a>
         </div>
-        <div className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-2xl">
+        <div className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg">
           <Image
             alt="landing-image"
             src="/assets/landing-image.png"
