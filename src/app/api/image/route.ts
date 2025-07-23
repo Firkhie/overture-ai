@@ -20,7 +20,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const check = true;
+    const check = await executeFeature(userSubscription);
     if (check) {
       const response = await client.images.generate({
         prompt: messages,
