@@ -21,17 +21,13 @@ export async function POST(req: Request) {
   }
 
   try {
-    const model =
-      "lucataco/hotshot-xl:78b3a6257e16e4b241245d65c8b2b81ea2e1ff7ed4c55306b511509ddbfd327a";
+    const model = "bytedance/seedance-1-pro";
     const input = {
-      mp4: true,
-      seed: 6226,
-      steps: 90,
-      width: 672,
-      height: 384,
       prompt: messages,
-      scheduler: "EulerAncestralDiscreteScheduler",
-      negative_prompt: "blurry",
+      duration: 5,
+      resolution: "480p",
+      aspect_ratio: "16:9",
+      fps: 24,
     };
     const check = await executeFeature(userSubscription);
     if (check) {

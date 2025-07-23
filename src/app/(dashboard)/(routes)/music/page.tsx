@@ -9,7 +9,7 @@ import { features } from "@/lib/features";
 import useUserStore from "@/store/useUserStore";
 import useUserSubscriptionStore from "@/store/useUserSubscriptionStore";
 
-import { Music } from "lucide-react";
+import { Info, Music } from "lucide-react";
 import Heading from "@/components/heading";
 import Loader from "@/components/loader";
 import Empty from "@/components/empty";
@@ -17,6 +17,7 @@ import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
 import { toast } from "sonner";
 import ChatForm from "@/components/chat-form";
+import demoMusic from "@/data/demo-music.json";
 
 type MessageParam = {
   role: "user" | "assistant";
@@ -54,9 +55,13 @@ export default function MusicPage() {
   const endMessageRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const storedMessages = sessionStorage.getItem("musicMessages");
-    if (storedMessages) {
-      setMessages(JSON.parse(storedMessages));
+    if (isOnline) {
+      const storedMessages = sessionStorage.getItem("musicMessages");
+      if (storedMessages) {
+        setMessages(JSON.parse(storedMessages));
+      }
+    } else {
+      setMessages(demoMusic as MessageParam[]);
     }
   }, []);
 
@@ -141,6 +146,12 @@ export default function MusicPage() {
       />
       <div className="h-full flex-1 overflow-y-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
         <div className="h-full space-y-3">
+          {!isOnline && (
+            <div className="flex w-fit items-center gap-x-[6px] rounded-md bg-[#f5f1ff] px-4 py-1 text-sm">
+              <Info className="h-[14px] w-[14px]" />
+              <p>Sample Output</p>
+            </div>
+          )}
           {messages.length == 0 && !isLoading && (
             <Empty description="No conversation started." />
           )}

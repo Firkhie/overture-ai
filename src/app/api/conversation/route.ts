@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       const streamingResponse = await client.messages.create({
         max_tokens: 1024,
         messages: [messages],
-        model: "claude-3-haiku-20240307",
+        model: "claude-3-5-haiku-latest",
         stream: true,
       });
 

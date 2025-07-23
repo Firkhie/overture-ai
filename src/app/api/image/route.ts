@@ -20,13 +20,12 @@ export async function POST(req: Request) {
   }
 
   try {
-    const check = await executeFeature(userSubscription);
+    const check = true;
     if (check) {
       const response = await client.images.generate({
         prompt: messages,
         model: "dall-e-2",
         n: 4,
-        quality: "standard",
         response_format: "b64_json",
         size: "256x256",
       });

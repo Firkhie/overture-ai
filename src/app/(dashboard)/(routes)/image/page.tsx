@@ -10,7 +10,7 @@ import { features } from "@/lib/features";
 import useUserStore from "@/store/useUserStore";
 import useUserSubscriptionStore from "@/store/useUserSubscriptionStore";
 
-import { ImageIcon, Download } from "lucide-react";
+import { ImageIcon, Download, Info } from "lucide-react";
 import Heading from "@/components/heading";
 import Loader from "@/components/loader";
 import Empty from "@/components/empty";
@@ -18,6 +18,7 @@ import UserAvatar from "@/components/user-avatar";
 import BotAvatar from "@/components/bot-avatar";
 import { toast } from "sonner";
 import ChatForm from "@/components/chat-form";
+import demoImage from "@/data/demo-image.json";
 
 type MessageParam = {
   role: "user" | "assistant";
@@ -46,9 +47,13 @@ export default function ImagePage() {
   const endMessageRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const storedMessages = sessionStorage.getItem("imageMessages");
-    if (storedMessages) {
-      setMessages(JSON.parse(storedMessages));
+    if (isOnline) {
+      const storedMessages = sessionStorage.getItem("imageMessages");
+      if (storedMessages) {
+        setMessages(JSON.parse(storedMessages));
+      }
+    } else {
+      setMessages(demoImage as MessageParam[]);
     }
   }, []);
 
@@ -135,6 +140,12 @@ export default function ImagePage() {
       />
       <div className="h-full flex-1 overflow-y-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
         <div className="h-full space-y-3">
+          {!isOnline && (
+            <div className="flex w-fit items-center gap-x-[6px] rounded-md bg-[#f5f1ff] px-4 py-1 text-sm">
+              <Info className="h-[14px] w-[14px]" />
+              <p>Sample Output</p>
+            </div>
+          )}
           {messages.length == 0 && !isLoading && (
             <Empty description="No conversation started." />
           )}

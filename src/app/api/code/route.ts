@@ -28,7 +28,7 @@ export async function POST(req: Request) {
         messages: [messages],
         system:
           "You are a code generator. You must always respond only with markdown code snippets, even for general queries. Do not respond in plain text under any circumstances. Use code comments for the code explanations.",
-        model: "claude-3-haiku-20240307",
+        model: "claude-3-5-haiku-latest",
         stream: true,
       });
 

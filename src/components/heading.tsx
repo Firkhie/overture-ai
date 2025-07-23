@@ -26,12 +26,15 @@ export default function Heading({
         <div className="flex items-center gap-x-2">
           <h2 className="text-lg font-bold md:text-xl lg:text-2xl">{title}</h2>
           {type === "feature" && (
-            <div
-              className={cn(
-                "h-[10px] w-[10px] flex-shrink-0 rounded-full",
-                isOnline ? "bg-[#aaff00]" : "bg-[#f52529]",
-              )}
-            ></div>
+            <div className="flex items-center gap-x-1 rounded-md bg-[#282627]/5 px-2 py-1 text-[10px] font-semibold uppercase">
+              <div
+                className={cn(
+                  "h-2 w-2 flex-shrink-0 rounded-full",
+                  isOnline ? "bg-[#aaff00]" : "bg-[#f52529]",
+                )}
+              ></div>
+              {isOnline ? "ONLINE" : "OFFLINE"}
+            </div>
           )}
         </div>
         <p className="text-sm text-muted-foreground lg:text-base">
