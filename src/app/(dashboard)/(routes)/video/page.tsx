@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn, getRandomHeader } from "@/lib/utils";
+import { features } from "@/lib/features";
 import useUserStore from "@/store/useUserStore";
 import useUserSubscriptionStore from "@/store/useUserSubscriptionStore";
 
@@ -21,6 +22,9 @@ type MessageParam = {
   role: "user" | "assistant";
   content: string | { header: string; videoBase64: string };
 };
+
+const videoFeature = features.video;
+const isOnline = videoFeature.status === "online" ? true : false;
 
 const headerVariations = [
   "Discover the cinematic experience created from your prompt. Dive into your unique video!",
@@ -132,6 +136,8 @@ export default function VideoPage() {
         title="Video Generation"
         description="Bring your concepts to life with visually captivating videos crafted by our AI"
         icon={Video}
+        isOnline={isOnline}
+        type="feature"
       />
       <div className="h-full flex-1 overflow-y-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
         <div className="h-full space-y-3">
@@ -189,6 +195,7 @@ export default function VideoPage() {
         isLoading={isLoading}
         onSubmit={onSubmit}
         formInstance={form}
+        isOnline={isOnline}
       />
     </div>
   );

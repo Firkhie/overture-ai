@@ -7,6 +7,7 @@ import markdownit from "markdown-it";
 import { MessageParam } from "@anthropic-ai/sdk/resources/messages.mjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
+import { features } from "@/lib/features";
 import useUserStore from "@/store/useUserStore";
 import useUserSubscriptionStore from "@/store/useUserSubscriptionStore";
 
@@ -24,6 +25,9 @@ const formSchema = z.object({
     message: "Prompt is required",
   }),
 });
+
+const codeFeature = features.code;
+const isOnline = codeFeature.status === "online" ? true : false;
 
 export default function CodePage() {
   const { userName } = useUserStore();
@@ -149,6 +153,8 @@ export default function CodePage() {
         title="Code Generation"
         description="Generate high-quality, efficient code effortlessly with our advanced model"
         icon={Code}
+        isOnline={isOnline}
+        type="feature"
       />
       <div className="h-full flex-1 overflow-y-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
         <div className="h-full space-y-3">
@@ -213,6 +219,7 @@ export default function CodePage() {
         isLoading={isLoading}
         onSubmit={onSubmit}
         formInstance={form}
+        isOnline={isOnline}
       />
     </div>
   );

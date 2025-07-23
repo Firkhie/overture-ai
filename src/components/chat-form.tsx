@@ -10,6 +10,7 @@ interface ChatFormProps {
   isLoading: boolean;
   inputRef: RefObject<HTMLInputElement>;
   formInstance: any;
+  isOnline: boolean;
 }
 
 export default function ChatForm({
@@ -17,6 +18,7 @@ export default function ChatForm({
   isLoading,
   onSubmit,
   formInstance: form,
+  isOnline,
 }: ChatFormProps) {
   return (
     <div className="space-y-2 border-l border-r border-[#593a8b] bg-white p-4">
@@ -35,14 +37,18 @@ export default function ChatForm({
                     ref={inputRef}
                     autoComplete="off"
                     className="border-0 text-sm outline-none focus-visible:ring-transparent md:text-[15px]"
-                    disabled={isLoading}
+                    disabled={isLoading || !isOnline}
                     placeholder="Send a message.."
                   />
                 </FormControl>
               </FormItem>
             )}
           />
-          <Button disabled={isLoading} size="chat" variant="custom">
+          <Button
+            disabled={isLoading || !isOnline}
+            size="chat"
+            variant="custom"
+          >
             <SendHorizontal />
           </Button>
         </form>

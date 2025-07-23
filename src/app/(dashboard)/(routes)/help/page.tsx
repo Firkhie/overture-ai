@@ -114,6 +114,7 @@ export default function HelpPage() {
         title="Help & FAQ"
         description="Find answers to common questions and tips for using our AI features"
         icon={CircleHelp}
+        type="general"
       />
       <Accordion type="single" collapsible className="w-full space-y-3">
         {accordionItems.map((item) => (

@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn, getRandomHeader } from "@/lib/utils";
+import { features } from "@/lib/features";
 import useUserStore from "@/store/useUserStore";
 import useUserSubscriptionStore from "@/store/useUserSubscriptionStore";
 
@@ -30,6 +31,9 @@ const headerVariations = [
   "Here you go! These images were generated using your input. Hope they inspire you!",
   "These are the images generated from the prompt you provided. Feel free to explore them below.",
 ];
+
+const imageFeature = features.image;
+const isOnline = imageFeature.status === "online" ? true : false;
 
 export default function ImagePage() {
   const { userName } = useUserStore();
@@ -126,6 +130,8 @@ export default function ImagePage() {
         title="Image Generation"
         description="Transform your ideas into stunning visuals with our cutting-edge image generator"
         icon={ImageIcon}
+        isOnline={isOnline}
+        type="feature"
       />
       <div className="h-full flex-1 overflow-y-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
         <div className="h-full space-y-3">
@@ -192,6 +198,7 @@ export default function ImagePage() {
         isLoading={isLoading}
         onSubmit={onSubmit}
         formInstance={form}
+        isOnline={isOnline}
       />
     </div>
   );

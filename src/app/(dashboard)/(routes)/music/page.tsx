@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn, getRandomHeader } from "@/lib/utils";
+import { features } from "@/lib/features";
 import useUserStore from "@/store/useUserStore";
 import useUserSubscriptionStore from "@/store/useUserSubscriptionStore";
 
@@ -38,6 +39,9 @@ const isAudioMessage = (
     undefined
   );
 };
+
+const musicFeature = features.music;
+const isOnline = musicFeature.status === "online" ? true : false;
 
 export default function MusicPage() {
   const { userName } = useUserStore();
@@ -132,6 +136,8 @@ export default function MusicPage() {
         title="Music Generation"
         description="Create unique melodies and harmonies tailored to your input using our AI composer"
         icon={Music}
+        isOnline={isOnline}
+        type="feature"
       />
       <div className="h-full flex-1 overflow-y-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
         <div className="h-full space-y-3">
@@ -189,6 +195,7 @@ export default function MusicPage() {
         isLoading={isLoading}
         onSubmit={onSubmit}
         formInstance={form}
+        isOnline={isOnline}
       />
     </div>
   );

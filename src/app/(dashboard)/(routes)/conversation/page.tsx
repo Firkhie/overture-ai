@@ -6,6 +6,7 @@ import { z } from "zod";
 import { MessageParam } from "@anthropic-ai/sdk/resources/messages.mjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
+import { features } from "@/lib/features";
 import useUserStore from "@/store/useUserStore";
 import useUserSubscriptionStore from "@/store/useUserSubscriptionStore";
 
@@ -23,6 +24,9 @@ const formSchema = z.object({
     message: "Prompt is required",
   }),
 });
+
+const conversationFeature = features.conversation;
+const isOnline = conversationFeature.status === "online" ? true : false;
 
 export default function ConversationPage() {
   const { userName } = useUserStore();
@@ -124,6 +128,8 @@ export default function ConversationPage() {
         title="Conversation"
         description="Engage in natural, dynamic interactions powered by our conversational AI"
         icon={MessageSquare}
+        isOnline={isOnline}
+        type="feature"
       />
       <div className="h-full flex-1 overflow-auto rounded-t-lg border border-[#593a8b] bg-white p-4 scrollbar-hide">
         <div className="h-full space-y-3">
@@ -160,6 +166,7 @@ export default function ConversationPage() {
         isLoading={isLoading}
         onSubmit={onSubmit}
         formInstance={form}
+        isOnline={isOnline}
       />
     </div>
   );
