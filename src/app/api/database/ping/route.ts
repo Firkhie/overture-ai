@@ -6,6 +6,7 @@ export async function GET() {
     await pingSubscription();
     return NextResponse.json({ status: "pinged" });
   } catch (error) {
+    console.error("[PING_ROUTE] Error:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
