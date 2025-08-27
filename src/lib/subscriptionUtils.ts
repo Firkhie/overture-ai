@@ -71,6 +71,10 @@ export async function upgradeSubscription(
   }
 }
 
+export async function pingSubscription() {
+  return await prismadb.userSubscription.count();
+}
+
 async function checkSubscription(userId: string) {
   const userSubscription = await prismadb.userSubscription.findFirst({
     where: {
