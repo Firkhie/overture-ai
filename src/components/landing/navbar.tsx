@@ -28,7 +28,7 @@ export default function LandingNavbar() {
         scrolled ? "bg-[#8f69cb]/20 backdrop-blur-md" : "",
       )}
     >
-      <div className="mx-auto w-full max-w-screen-2xl py-6 text-[15px]">
+      <div className="mx-auto w-full lg:max-w-screen-lg xl:max-w-screen-xl py-6 text-[15px]">
         <div className="flex w-full items-center justify-between">
           <a href="#home" className="flex items-center justify-center gap-x-2">
             <div className="relative h-6 w-6">
